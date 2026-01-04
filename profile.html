@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CipherTrace | Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Inter',sans-serif;
+  color:#e0e0e0;
+  background:#000;
+}
+
+/* Background */
+.video-bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.95));
+  z-index:-1;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:18px 6vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:5;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,255,255,.15);
+}
+.navbar span{
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:3px;
+  color:#00ffff;
+}
+.navbar button{
+  padding:10px 18px;
+  border-radius:14px;
+  font-family:'Orbitron',sans-serif;
+  border:1px solid rgba(0,255,255,.45);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  cursor:pointer;
+}
+
+/* HERO HEADER */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:0 6vw;
+}
+.hero h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:clamp(48px,8vw,120px);
+  letter-spacing:8px;
+  color:#00ffff;
+}
+.hero p{
+  margin-top:18px;
+  font-size:18px;
+  color:#9fb0c3;
+  letter-spacing:2px;
+}
+
+/* Page */
+.page{width:100%}
+
+/* Section */
+.section{
+  padding:80px 6vw;
+}
+
+/* Cards */
+.card{
+  background:rgba(10,14,18,.38);
+  backdrop-filter:blur(16px);
+  border-radius:28px;
+  padding:40px;
+  border:1px solid rgba(0,255,255,.28);
+  box-shadow:0 0 40px rgba(0,255,255,.18);
+}
+
+/* Scroll animation */
+.reveal{
+  opacity:0;
+  transform:translateY(50px);
+  transition:.9s ease;
+}
+.reveal.visible{
+  opacity:1;
+  transform:none;
+}
+
+/* Typography */
+.section-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#00ffff;
+  margin-bottom:16px;
+}
+p{
+  font-size:14px;
+  line-height:1.7;
+  color:#b8d9e6;
+}
+
+/* Buttons */
+.btn{
+  width:100%;
+  padding:18px;
+  border-radius:18px;
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:2px;
+  border:1px solid rgba(0,255,255,.45);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  cursor:pointer;
+}
+.btn-disabled{
+  background:rgba(5,10,14,.9);
+  color:#6b8c99;
+  cursor:not-allowed;
+}
+
+/* Timer */
+.timer{
+  margin:22px 0;
+  font-family:'Orbitron',sans-serif;
+  font-size:18px;
+  letter-spacing:2px;
+  color:#00ffff;
+}
+
+/* Status */
+.status{margin-top:12px;font-size:14px}
+.error{color:#ff6b6b}
+.success{color:#00ff9d}
+
+/* Typewriter */
+.typewriter {
+  font-size:14px;
+  line-height:1.7;
+  color:#b8d9e6;
+  border-right: 2px solid #00ffff;
+  overflow: hidden;
+  animation: blink-caret 1s step-end infinite, glow 2s ease-in-out infinite alternate;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #00ffff; }
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
+  to { text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); }
+}
+</style>
+</head>
+
+<body>
+
+<video class="video-bg" autoplay muted loop playsinline>
+  <source src="video.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <span>CipherTrace</span>
+  <button id="navLogout" onclick="logout()">LOGOUT</button>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <h1 id="heroTitle">Welcome Back</h1>
+    <p id="heroSubtitle">Your Profile</p>
+  </div>
+</section>
+
+<div class="page">
+
+<!-- PROFILE INFO -->
+<div class="section reveal">
+  <div class="card">
+    <div class="section-title">YOUR PROFILE</div>
+    <p id="profileInfo">Loading...</p>
+  </div>
+</div>
+
+<!-- ROUND 1 -->
+<div class="section reveal">
+  <div class="card">
+    <div class="section-title">ROUND 1 — SOCIAL MEDIA INVESTIGATION</div>
+    <p>
+        - Initial screening round to test fundamental logical and analytical skills <br>
+        - Focus on problem-solving, pattern recognition, and basic reasoning<br>
+        - Objective-type or short-answer questions<br>
+        - Time-bound to assess speed and accuracy<br>
+        - Used to shortlist participants for the next round<br>
+    </p>
+    <!-- TIMER BUTTON -->
+    <button class="btn btn-disabled" id="timerBtn1" disabled>
+      UNLOCKS ON JAN 9 • 6:00 PM
+    </button>
+
+    <div class="timer" id="timer1">Start ROUND </div>
+    <button class="btn btn-disabled" id="r1btn" disabled>LOCKED</button>
+  </div>
+</div>
+
+<!-- ROUND 2 -->
+<div class="section reveal">
+  <div class="card">
+    <div class="section-title">ROUND 2 — PIXEL LAB</div>
+    <p>
+        - This is the last and decisive round of CipherTrace<br>
+        - Focuses on advanced visual analysis and pixel-level observation<br>
+        - Participants decode hidden clues embedded in images or visual patterns<br>
+        - Tests critical thinking, creativity, and problem-solving under time constraints<br>
+        - Final results are determined by accuracy, speed, and logical reasoning<br>
+    </p>
+    <!-- TIMER BUTTON -->
+    <button class="btn btn-disabled" id="timerBtn2" disabled>
+      UNLOCKS ON JAN 10 • 1:00 PM
+    </button>
+
+    <div class="timer" id="timer2">--</div>
+    <button class="btn btn-disabled" id="r2btn" disabled>LOCKED (On Successful Completion of ROUND 1)</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="section reveal">
+  <div class="card">
+    <div class="section-title">CIPHERTRACE • CONTACT DETAILS </div>
+
+      <p>Jiya B Thakker — <span style="color:#00ffff">24f3001258@ds.study.iitm.ac.in</span></p>
+      <p>Adrika Ghosh — <span style="color:#00ffff">24f2006087@ds.study.iitm.ac.in</span></p>
+    </div>
+
+    <p style="margin-top:26px; font-size:12px; color:#6ea9bb; text-align:center;">
+      © 2026 CipherTrace • All access attempts are logged • Unauthorized sharing prohibited
+    </p>
+  </div>
+</div>
+
+</div>
+
+<script type="module">
+// Import Firebase core
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+// Import Auth functions
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+// Import Realtime Database functions
+import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAoFcqKMYnU1pfF8pVBk6oxusVxgAzb1oQ",
+  authDomain: "ciphertrace-26b33.firebaseapp.com",
+  databaseURL: "https://ciphertrace-26b33-default-rtdb.firebaseio.com",
+  projectId: "ciphertrace-26b33",
+  storageBucket: "ciphertrace-26b33.firebasestorage.app",
+  messagingSenderId: "965143042848",
+  appId: "1:965143042848:web:959bd072875b52e20e1545"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Auth
+const auth = getAuth(app);
+
+// Initialize Realtime Database
+const db = getDatabase(app);
+
+let round1Done = false;
+
+// Reveal animation
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("visible");
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: .2 });
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+// Logout function
+function logout() {
+  signOut(auth).then(() => {
+    window.location.href = 'index.html';
+  });
+}
+
+// Check auth and load profile
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    const uid = user.uid;
+    get(ref(db, 'users/' + uid)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        const now = Date.now();
+        if (now - data.lastLogin > 3600000) { // 1 hour
+          signOut(auth).then(() => {
+            window.location.href = 'index.html';
+          });
+        } else {
+          // Update lastLogin
+          set(ref(db, 'users/' + uid + '/lastLogin'), now);
+          // Display profile
+          document.getElementById("profileInfo").innerHTML = `
+            <strong>Name:</strong> ${data.name}<br>
+            <strong>Email:</strong> ${data.email}<br>
+            <strong>Round 1 Completed:</strong> ${data.round1Done ? 'Yes' : 'No'}
+          `;
+          round1Done = data.round1Done;
+          // Start timers
+          tick();
+        }
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  } else {
+    window.location.href = 'index.html';
+  }
+});
+
+// Timer functions (same as before)
+function nextDate(month, day, hour, min) {
+  const now = new Date();
+  let d = new Date(now.getFullYear(), month - 1, day, hour, min, 0);
+  if (d.getTime() <= now.getTime()) {
+    d = new Date(now.getFullYear() + 1, month - 1, day, hour, min, 0);
+  }
+  return d.getTime();
+}
+
+const r1Time = nextDate(1, 9, 18, 0);
+const r2Time = nextDate(1, 10, 13, 0);
+
+function format(ms) {
+  if (ms <= 0) return "00h 00m 00s";
+  const totalSeconds = Math.ceil(ms / 1000);
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const s = String(totalSeconds % 60).padStart(2, "0");
+  return `${h}h ${m}m ${s}s`;
+}
+
+function tick() {
+  const now = Date.now();
+
+  /* ROUND 1 */
+  const r1 = document.getElementById("timer1");
+  const r1btn = document.getElementById("r1btn");
+  const tbtn1 = document.getElementById("timerBtn1");
+
+  const r1Remaining = r1Time - now;
+
+  if (r1Remaining > 0) {
+    const t = format(r1Remaining);
+    tbtn1.textContent = "UNLOCKS IN " + t;
+    r1.textContent = "";
+  } else {
+    tbtn1.textContent = "ROUND 1 LIVE";
+    r1.textContent = "LIVE NOW";
+    r1btn.disabled = false;
+    r1btn.classList.remove("btn-disabled");
+    r1btn.textContent = "ENTER ROUND 1";
+    r1btn.onclick = () => {
+      round1Done = true;
+      // Update DB
+      const user = auth.currentUser;
+      if (user) {
+        set(ref(db, 'users/' + user.uid + '/round1Done'), true);
+      }
+    };
+  }
+
+  /* ROUND 2 */
+  const r2 = document.getElementById("timer2");
+  const r2btn = document.getElementById("r2btn");
+  const tbtn2 = document.getElementById("timerBtn2");
+
+  const r2Remaining = r2Time - now;
+
+  if (r2Remaining > 0) {
+    const t = format(r2Remaining);
+    tbtn2.textContent = "UNLOCKS IN " + t;
+    r2.textContent = "";
+  } else {
+    if (round1Done) {
+      tbtn2.textContent = "ROUND 2 LIVE";
+      r2.textContent = "LIVE NOW";
+      r2btn.disabled = false;
+      r2btn.classList.remove("btn-disabled");
+      r2btn.textContent = "ENTER ROUND 2";
+    } else {
+      tbtn2.textContent = "WAITING FOR ROUND 1";
+      r2.textContent = "LOCKED";
+    }
+  }
+
+  setTimeout(tick, 1000 - (Date.now() % 1000));
+}
+
+// Make logout global
+window.logout = logout;
+</script>
+
+</body>
+</html>
