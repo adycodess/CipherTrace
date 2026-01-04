@@ -4,10 +4,10 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
 // Import Auth functions
-import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Import Realtime Database functions
-import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -23,9 +23,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Initialize Auth with session persistence
+// Initialize Auth
 const auth = getAuth(app);
-setPersistence(auth, browserSessionPersistence);
 
 // Initialize Realtime Database
 const db = getDatabase(app);
@@ -63,27 +62,50 @@ function typeWriter(element, text, speed = 50) {
   type();
 }
 
-/* Submit Form (Now triggers login) */
+/* Submit Form */
 function submitForm() {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
-  const status = document.getElementById("loginStatus");
 
   if (name === "" || email === "") {
-    status.textContent = "Please fill all fields";
-    status.className = "status error";
+    alert("Please fill all fields");
     return;
   }
+
+  // Push creates a unique ID automatically
+  push(ref(db, "registrations"), {
+    name: name,
+    email: email,
+    timestamp: Date.now()
+  }).then(() => {
+    // On success, update navbar button to the email
+    document.getElementById("navLogin").textContent = email;
+    // Replace login section with greeting and typewriter text
+    document.getElementById("loginSection").innerHTML = `
+      <div class="card">
+        <div class="section-title">Hello, ${name}!</div>
+        <p id="welcomeText" class="typewriter"></p>
+      </div>
+    `;
+    // Start typewriter effect
+    const welcomeText = document.getElementById("welcomeText");
+    const fullText = "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
+    typeWriter(welcomeText, fullText);
+  }).catch(err => {
+    alert("Error: " + err.message);
+  });
+}
+
+/* Login */
+function login() {
+  const email = document.getElementById("email").value.trim().toLowerCase();
+  const status = document.getElementById("loginStatus");
 
   if (!email.endsWith("@ds.study.iitm.ac.in")) {
     status.textContent = "Only IITM emails allowed";
     status.className = "status error";
     return;
   }
-
-  // Store temporarily
-  localStorage.setItem("ciphertraceName", name);
-  localStorage.setItem("ciphertraceEmail", email);
 
   status.textContent = "Sending login link…";
   status.className = "status";
@@ -93,7 +115,8 @@ function submitForm() {
     handleCodeInApp: true
   })
   .then(() => {
-    status.textContent = "Login link sent to your IITM email. Check your inbox and click the link to proceed.";
+    localStorage.setItem("ciphertraceEmail", email);
+    status.textContent = "Login link sent to your IITM email";
     status.className = "status success";
   })
   .catch(err => {
@@ -107,15 +130,16 @@ function signInWithGoogle() {
   signInWithPopup(auth, provider)
   .then((result) => {
     const user = result.user;
-    // Create/update profile
+    const email = user.email;
+    // Store in database
     set(ref(db, 'users/' + user.uid), {
-      email: user.email,
-      name: user.displayName || 'Unknown',
-      lastLogin: Date.now(),
-      round1Done: false
+      email: email
     });
+    // Update navbar
+    document.getElementById("navLogin").textContent = email;
     loggedIn = true;
-    window.location.href = 'profile.html';
+    document.getElementById("loginStatus").textContent = "Logged in with Google";
+    document.getElementById("loginStatus").className = "status success";
   })
   .catch(err => {
     document.getElementById("loginStatus").textContent = err.message;
@@ -128,26 +152,99 @@ function scrollToLogin() {
   document.getElementById("loginSection").scrollIntoView({ behavior: "smooth" });
 }
 
-/* Handle Email Link Sign In */
+/* ⏰ REAL CLOCK BASED TIMER */
+function nextDate(month, day, hour, min) {
+  const now = new Date();
+  let d = new Date(now.getFullYear(), month - 1, day, hour, min, 0);
+
+  if (d.getTime() <= now.getTime()) {
+    d = new Date(now.getFullYear() + 1, month - 1, day, hour, min, 0);
+  }
+  return d.getTime();
+}
+
+const r1Time = nextDate(1, 9, 18, 0);   // Jan 9, 6:00 PM
+const r2Time = nextDate(1, 10, 13, 0);  // Jan 10, 1:00 PM
+
+function format(ms) {
+  if (ms <= 0) return "00h 00m 00s";
+
+  const totalSeconds = Math.ceil(ms / 1000); // 🔥 this makes seconds tick cleanly
+  const h = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
+  const m = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0");
+  const s = String(totalSeconds % 60).padStart(2, "0");
+
+  return `${h}h ${m}m ${s}s`;
+}
+
+function tick() {
+  const now = Date.now();
+
+  /* ROUND 1 */
+  const r1 = document.getElementById("timer1");
+  const r1btn = document.getElementById("r1btn");
+  const tbtn1 = document.getElementById("timerBtn1");
+
+  const r1Remaining = r1Time - now;
+
+  if (r1Remaining > 0) {
+    const t = format(r1Remaining);
+    tbtn1.textContent = "UNLOCKS IN " + t;   // 🔥 ONLY HERE
+    r1.textContent = "";                    // no duplicate timer
+  } else {
+    tbtn1.textContent = "ROUND 1 LIVE";
+    r1.textContent = "LIVE NOW";
+    r1btn.disabled = false;
+    r1btn.classList.remove("btn-disabled");
+    r1btn.textContent = "ENTER ROUND 1";
+    r1btn.onclick = () => { round1Done = true };
+  }
+
+  /* ROUND 2 */
+  const r2 = document.getElementById("timer2");
+  const r2btn = document.getElementById("r2btn");
+  const tbtn2 = document.getElementById("timerBtn2");
+
+  const r2Remaining = r2Time - now;
+
+  if (r2Remaining > 0) {
+    const t = format(r2Remaining);
+    tbtn2.textContent = "UNLOCKS IN " + t;   // 🔥 ONLY HERE
+    r2.textContent = "";
+  } else {
+    if (round1Done) {
+      tbtn2.textContent = "ROUND 2 LIVE";
+      r2.textContent = "LIVE NOW";
+      r2btn.disabled = false;
+      r2btn.classList.remove("btn-disabled");
+      r2btn.textContent = "ENTER ROUND 2";
+    } else {
+      tbtn2.textContent = "WAITING FOR ROUND 1";
+      r2.textContent = "LOCKED";
+    }
+  }
+
+  setTimeout(tick, 1000 - (Date.now() % 1000));
+}
+
+tick();
+
 if (isSignInWithEmailLink(auth, window.location.href)) {
   const email = localStorage.getItem("ciphertraceEmail");
-  const name = localStorage.getItem("ciphertraceName");
 
   if (email) {
     signInWithEmailLink(auth, email, window.location.href)
       .then((result) => {
         const user = result.user;
-        // Create/update profile
+        // Store in database
         set(ref(db, 'users/' + user.uid), {
-          email: user.email,
-          name: name,
-          lastLogin: Date.now(),
-          round1Done: false
+          email: user.email
         });
-        localStorage.removeItem("ciphertraceName");
         localStorage.removeItem("ciphertraceEmail");
         loggedIn = true;
-        window.location.href = 'profile.html';
+        document.getElementById("navLogin").textContent = user.email;
+        document.getElementById("loginStatus").textContent = "Logged in";
+        document.getElementById("loginStatus").className = "status success";
       })
       .catch(err => alert(err.message));
   }
@@ -155,5 +252,6 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
 
 // Make functions global
 window.submitForm = submitForm;
+window.login = login;
 window.signInWithGoogle = signInWithGoogle;
-window.scrollToLogin = scrollToLogin;
+window.scrollToLogin = scrollToLogin
