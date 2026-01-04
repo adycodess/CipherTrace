@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CipherTrace | Round 1</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Inter',sans-serif;
+  color:#e0e0e0;
+  background:#000;
+  /* Allow scrolling */
+  overflow-y: auto;
+}
+
+/* Background */
+.video-bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-2;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.95));
+  z-index:-1;
+}
+
+/* ENTRY SCREEN */
+.entry-screen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(12px);
+  transition:opacity .6s ease, visibility .6s ease;
+}
+
+.entry-screen.hidden{
+  opacity:0;
+  visibility:hidden;
+}
+
+.entry-screen h1{
+  font-family:'Orbitron',sans-serif;
+  font-size:64px;
+  letter-spacing:6px;
+  color:#00ffff;
+  margin-bottom:30px;
+}
+
+.entry-screen button{
+  padding:18px 40px;
+  font-family:'Orbitron',sans-serif;
+  font-size:16px;
+  letter-spacing:3px;
+  border-radius:20px;
+  border:1px solid rgba(0,255,255,.5);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  cursor:pointer;
+}
+
+/* TIMER */
+.timer-box{
+  position:fixed;
+  top:18px;
+  right:6vw;
+  z-index:6;
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#00ffff;
+  display:none;
+}
+
+/* NAVBAR */
+.navbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:18px 6vw;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  z-index:5;
+  background:rgba(0,0,0,.35);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,255,255,.15);
+}
+.navbar span{
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:3px;
+  color:#00ffff;
+}
+
+/* Section */
+.section{
+  padding:120px 6vw;
+  display:flex;
+  justify-content:center;
+}
+
+/* Card */
+.card{
+  width:100%;
+  max-width:900px;
+  background:rgba(10,14,18,.38);
+  backdrop-filter:blur(16px);
+  border-radius:28px;
+  padding:40px;
+  border:1px solid rgba(0,255,255,.28);
+  box-shadow:0 0 40px rgba(0,255,255,.18);
+}
+
+/* Title */
+.section-title{
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#00ffff;
+  margin-bottom:20px;
+}
+
+/* Scratch */
+.scratch-container{
+  position:relative;
+  width:100%;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(0,255,255,.25);
+}
+.scratch-container img{
+  width:100%;
+  display:block;
+}
+#scratchCanvas{
+  position:absolute;
+  inset:0;
+  cursor:crosshair;
+}
+
+/* Instruction */
+.instruction{
+  margin-top:18px;
+  font-size:14px;
+  letter-spacing:1px;
+  color:#9fb0c3;
+  text-align:center;
+}
+
+/* Reveal Button */
+.reveal-btn{
+  margin:20px auto 0;
+  display:block;
+  padding:15px 30px;
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  border-radius:10px;
+  border:1px solid rgba(0,255,255,.5);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  cursor:pointer;
+  transition:background 0.3s ease;
+  display:none;
+}
+
+.reveal-btn:hover{
+  background:rgba(0,255,255,.2);
+}
+
+/* Clue */
+.clue{
+  margin-top:20px;
+  padding:20px;
+  background:rgba(10,14,18,.5);
+  border-radius:10px;
+  border:1px solid rgba(0,255,255,.3);
+  font-size:18px;
+  letter-spacing:2px;
+  color:#00ffff;
+  text-align:center;
+  display:none;
+}
+
+/* Success Message */
+.success-msg{
+  margin-top:20px;
+  font-size:16px;
+  letter-spacing:1px;
+  color:#00ff00;
+  text-align:center;
+  display:none;
+}
+
+/* Riddle Section */
+.riddle-section{
+  padding:120px 6vw 200px; /* Extra bottom padding for scrolling */
+  display:flex;
+  justify-content:center;
+}
+
+.riddle-card{
+  width:100%;
+  max-width:900px;
+  background:rgba(10,14,18,.38);
+  backdrop-filter:blur(16px);
+  border-radius:28px;
+  padding:40px;
+  border:1px solid rgba(0,255,255,.28);
+  box-shadow:0 0 40px rgba(0,255,255,.18);
+  text-align:center;
+}
+
+.riddle-text{
+  font-size:18px;
+  letter-spacing:1px;
+  color:#e0e0e0;
+  margin-bottom:30px;
+  line-height:1.6;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.inline-input{
+  width:150px;
+  padding:8px;
+  font-family:'Inter',sans-serif;
+  font-size:16px;
+  border-radius:5px;
+  border:1px solid rgba(0,255,255,.5);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  text-align:center;
+  outline:none;
+}
+
+.submit-btn{
+  padding:15px 30px;
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  border-radius:10px;
+  border:1px solid rgba(0,255,255,.5);
+  background:rgba(0,255,255,.1);
+  color:#00ffff;
+  cursor:pointer;
+  transition:background 0.3s ease;
+}
+
+.submit-btn:hover{
+  background:rgba(0,255,255,.2);
+}
+</style>
+</head>
+
+<body>
+
+<video class="video-bg" autoplay muted loop playsinline>
+  <source src="video.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- ENTRY -->
+<div class="entry-screen" id="entryScreen">
+  <h1>ROUND 1</h1>
+  <button onclick="enterRound()">ENTER</button>
+</div>
+
+<!-- TIMER -->
+<div class="timer-box" id="timer">00:00</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <span>CipherTrace</span>
+</div>
+
+<!-- ROUND CONTENT -->
+<div class="section">
+  <div class="card">
+    <div class="section-title">ROUND 1 — SYSTEM TRACE</div>
+
+    <div class="scratch-container">
+      <img src="puzzle1word1.jpeg" id="hiddenImage">
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+
+    <div class="instruction">
+      Scratch the surface to reveal. Observe carefully.
+    </div>
+
+    <div class="success-msg" id="successMsg">Card revealed successfully</div>
+
+    <button class="reveal-btn" id="revealBtn">REVEAL CLUE</button>
+
+    <div class="clue" id="clue">Hint: Thala for a reason</div>
+  </div>
+</div>
+
+<!-- RIDDLE SECTION -->
+<div class="riddle-section">
+  <div class="riddle-card">
+    <div class="riddle-text">
+      The <input type="text" class="inline-input" placeholder="answer"> . Your <input type="text" class="inline-input" placeholder="answer"> . <input type="text" class="inline-input" placeholder="answer"> .
+    </div>
+    <button class="submit-btn">SUBMIT ANSWER</button>
+  </div>
+</div>
+
+<script>
+/* ENTRY + TIMER */
+let seconds = 0;
+let timerInterval;
+
+function enterRound(){
+  document.getElementById("entryScreen").classList.add("hidden");
+  document.getElementById("timer").style.display = "block";
+
+  timerInterval = setInterval(() => {
+    seconds++;
+    const min = String(Math.floor(seconds / 60)).padStart(2,"0");
+    const sec = String(seconds % 60).padStart(2,"0");
+    document.getElementById("timer").textContent = `${min}:${sec}`;
+  }, 1000);
+}
+
+/* SCRATCH LOGIC */
+const canvas = document.getElementById("scratchCanvas");
+const img = document.getElementById("hiddenImage");
+const ctx = canvas.getContext("2d");
+
+let scratching = false, lastX = 0, lastY = 0;
+let revealTimer;
+
+function resizeCanvas(){
+  canvas.width = img.clientWidth;
+  canvas.height = img.clientHeight;
+  ctx.fillStyle = "#0a0e12";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+}
+img.onload = resizeCanvas;
+window.addEventListener("resize", resizeCanvas);
+
+function scratchLine(x,y){
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.lineWidth = 30;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(lastX,lastY);
+  ctx.lineTo(x,y);
+  ctx.stroke();
+}
+
+function checkScratchComplete(){
+  const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  const data = imageData.data;
+  let transparentPixels = 0;
+  for(let i = 3; i < data.length; i += 4){
+    if(data[i] === 0) transparentPixels++;
+  }
+  const totalPixels = canvas.width * canvas.height;
+  const scratchedPercent = (transparentPixels / totalPixels) * 100;
+  if(scratchedPercent > 80){ // Threshold for "completely scratched"
+    document.getElementById("successMsg").style.display = "block";
+    // Start 30-second timer for reveal button
+    revealTimer = setTimeout(() => {
+      document.getElementById("revealBtn").style.display = "block";
+    }, 30000); // 30 seconds
+  }
+}
+
+canvas.addEventListener("mousedown",e=>{
+  scratching = true;
+  const r = canvas.getBoundingClientRect();
+  lastX = e.clientX - r.left;
+  lastY = e.clientY - r.top;
+});
+canvas.addEventListener("mouseup",()=>{
+  scratching = false;
+  checkScratchComplete();
+});
+canvas.addEventListener("mousemove",e=>{
+  if(!scratching) return;
+  const r = canvas.getBoundingClientRect();
+  const x = e.clientX - r.left;
+  const y = e.clientY - r.top;
+  scratchLine(x,y);
+  lastX = x; lastY = y;
+});
+
+document.getElementById("revealBtn").addEventListener("click", ()=>{
+  document.getElementById("clue").style.display = "block";
+  document.getElementById("revealBtn").style.display = "none";
+});
+</script>
+
+</body>
+</html>
