@@ -267,6 +267,64 @@ body{
 .submit-btn:hover{
   background:rgba(0,255,255,.2);
 }
+
+/* Submission Status */
+.submission-status{
+  margin-top:20px;
+  font-size:14px;
+  color:#00ff9d;
+  text-align:center;
+  display:none;
+}
+
+/* Instagram Button */
+.insta-button{
+  display:inline-block;
+  margin-top:25px;
+  padding:15px 34px;
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#00ffff;
+  text-decoration:none;
+  border-radius:14px;
+  border:1px solid rgba(0,255,255,.55);
+  background:rgba(0,255,255,.08);
+  backdrop-filter:blur(8px);
+  transition:all .35s ease;
+  box-shadow:0 0 18px rgba(0,255,255,.18);
+}
+
+.insta-button:hover{
+  background:rgba(0,255,255,.18);
+  box-shadow:0 0 30px rgba(0,255,255,.35);
+  transform:translateY(-2px);
+}
+
+.action{
+  text-align:center;
+}
+
+.audio-controls {
+  margin-top: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.audio-icon {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 0.2s ease;
+}
+
+.audio-icon:hover {
+  opacity: 1;
+}
 </style>
 </head>
 
@@ -294,7 +352,7 @@ body{
 <!-- ROUND CONTENT -->
 <div class="section">
   <div class="card">
-    <div class="section-title">ROUND 1 — SYSTEM TRACE</div>
+    <div class="section-title">PUZZLE 1 — SYSTEM TRACE</div>
 
     <div class="scratch-container">
       <img src="puzzle1word1.jpeg" id="hiddenImage">
@@ -313,15 +371,211 @@ body{
   </div>
 </div>
 
+<div class="section">
+  <div class="card">
+    <div class="section-title">PUZZLE 2 — INSTAGRAM DISCOVER</div>
+
+    <div class="instruction">
+      <ul>
+        <li>This answer does not exist on this page.</li>
+        <li>Visit our Instagram posts and look beyond captions that try to distract you.</li>
+        <li>Ignore what sounds dramatic or misleading.</li>
+        <li>Identify the single idea that quietly repeats itself across posts.</li>
+        <li>When everything else fades into noise, one word still stands.</li>
+      </ul>
+    </div>
+
+    <div class="action">
+    <a 
+    href="https://www.instagram.com/womenintech.iitm/" 
+    target="_blank" 
+    class="insta-button">
+    OPEN INSTAGRAM PAGE
+    </a>
+    </div>
+
+  </div>
+</div>
+
+<div class="section">
+  <div class="card">
+    <div class="section-title">PUZZLE 3 — FRAGMENTED QUOTES</div>
+
+    <div class="instruction">
+      <p>This puzzle does not exist in one place. <br>
+
+      Fragments of quotes are hidden across multiple platforms-
+      Instagram posts, story highlights, captions and comments.
+
+      Each fragment belongs to a larger thought spoken by someone famous.
+      The quotes are scattered, incomplete, and separated by noise.
+      To solve this puzzle, you must find and read all of them.
+
+      Across every quote, one word quietly survives every line.
+      
+    </p>  
+    </div>
+
+    <div class="action">
+    <button class="reveal-btn" id="revealPuzzle3Btn" style="display:block;">
+      REVEAL HINT
+    </button>
+
+    <div class="clue" id="puzzle3Clue">
+    A word that survived every line.<br>
+    To find the word, go forth, soldier.<br>
+    Find the final five lines.
+    </div>
+</div>
+</div>
+</div>
+
+<div class="section">
+  <div class="card">
+    <div class="section-title">PUZZLE 4 — AUDIO TRACE</div>
+
+    <div class="instruction">
+      <p>
+        This answer is not visible.<br>
+        It must be heard.<br><br>
+        The message you are searching for is hidden within the noise.<br>
+        To uncover it, you must reverse the audio and listen carefully.<br>
+        Do not focus on distortion alone: focus on what remains consistent when the sound is played correctly.
+      </p>
+    </div>
+
+    <!-- AUDIO ACTION -->
+    <div class="action">
+      <button class="reveal-btn" id="playAudioBtn" style="display:block;">
+        PLAY AUDIO
+      </button>
+
+      <audio id="awaitAudio">
+        <source src="await.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+
+      <div class="audio-controls" id="audioControls" style="display:none;">
+        <img src="pause.png" id="pauseResumeBtn" class="audio-icon" alt="Pause Audio">
+        <img src="down.png" id="downloadBtn" class="audio-icon" alt="Download Audio">
+      </div>
+    </div>
+
+    <!-- HINT ACTION -->
+    <div class="action">
+      <button class="reveal-btn" id="revealPuzzle4Btn" style="display:block;">
+        REVEAL HINT
+      </button>
+
+      <div class="clue" id="puzzle4Clue">
+        Decode the distortion.<br>
+        Reverse what you hear.<br>
+        The word reveals itself only when the signal is restored.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 <!-- RIDDLE SECTION -->
 <div class="riddle-section">
   <div class="riddle-card">
     <div class="riddle-text">
-      The <input type="text" class="inline-input" placeholder="answer"> . Your <input type="text" class="inline-input" placeholder="answer"> . <input type="text" class="inline-input" placeholder="answer"> .
+      The <input type="text" class="inline-input" id="input1" placeholder="answer"> <input type="text" class="inline-input" id="input2" placeholder="answer"> . Your <input type="text" class="inline-input" id="input3" placeholder="answer"> <input type="text" class="inline-input" id="input4" placeholder="answer"> . <input type="text" class="inline-input" id="input5" placeholder="answer"> .
     </div>
-    <button class="submit-btn">SUBMIT ANSWER</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitRound1()">SUBMIT ANSWER</button>
+    <div class="submission-status" id="submissionStatus"></div>
   </div>
 </div>
+
+<!-- Firebase SDK -->
+<script type="module">
+  // Import Firebase core
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  // Import Realtime Database functions
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAoFcqKMYnU1pfF8pVBk6oxusVxgAzb1oQ",
+    authDomain: "ciphertrace-26b33.firebaseapp.com",
+    databaseURL: "https://ciphertrace-26b33-default-rtdb.firebaseio.com",
+    projectId: "ciphertrace-26b33",
+    storageBucket: "ciphertrace-26b33.firebasestorage.app",
+    messagingSenderId: "965143042848",
+    appId: "1:965143042848:web:959bd072875b52e20e1545"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  // Initialize Realtime Database
+  const db = getDatabase(app);
+
+  console.log("Firebase initialized successfully."); // Debug log
+
+  // Retrieve user email from localStorage
+  const userEmail = localStorage.getItem("userEmail");
+  console.log("Retrieved userEmail from localStorage:", userEmail); // Debug log
+  let sanitizedEmail;
+  if (userEmail) {
+    sanitizedEmail = userEmail.replace(/\./g, ',');
+    console.log("Sanitized email:", sanitizedEmail); // Debug log
+  } else {
+    console.warn("No userEmail found in localStorage. User may not be logged in."); // Debug log
+  }
+
+  // Function to submit Round 1 answers
+  function submitRound1() {
+    console.log("submitRound1 called."); // Debug log
+
+    if (!userEmail || !sanitizedEmail) {
+      alert("User not logged in. Please log in from the main page.");
+      console.error("Submission blocked: No userEmail or sanitizedEmail."); // Debug log
+      return;
+    }
+
+    const ans1 = document.getElementById("input1").value.trim();
+    const ans2 = document.getElementById("input2").value.trim();
+    const ans3 = document.getElementById("input3").value.trim();
+    console.log("Collected answers:", ans1, ans2, ans3); // Debug log
+
+    if (!ans1 || !ans2 || !ans3) {
+      alert("Please fill all answer fields.");
+      console.warn("Submission blocked: Empty answers."); // Debug log
+      return;
+    }
+
+    const dataToStore = {
+      answers: [ans1, ans2, ans3],
+      time: seconds  // Global seconds from timer
+    };
+    console.log("Data to store:", dataToStore); // Debug log
+
+    try {
+      // Store answers and time in Firebase under the user's email
+      set(ref(db, "registrations/" + sanitizedEmail + "/round1"), dataToStore)
+        .then(() => {
+          console.log("Firebase set() successful."); // Debug log
+          document.getElementById("submissionStatus").textContent = "Successfully submitted Round 1";
+          document.getElementById("submissionStatus").style.display = "block";
+          document.getElementById("submitBtn").disabled = true;
+          document.getElementById("submitBtn").textContent = "SUBMITTED";
+        })
+        .catch(err => {
+          console.error("Firebase set() error:", err); // Debug log
+          alert("Error submitting answers: " + err.message);
+        });
+    } catch (error) {
+      console.error("Unexpected error in submitRound1:", error); // Debug log
+      alert("Unexpected error: " + error.message);
+    }
+  }
+
+  // Make function global
+  window.submitRound1 = submitRound1;
+</script>
 
 <script>
 /* ENTRY + TIMER */
@@ -359,7 +613,7 @@ window.addEventListener("resize", resizeCanvas);
 
 function scratchLine(x,y){
   ctx.globalCompositeOperation = "destination-out";
-  ctx.lineWidth = 30;
+  ctx.lineWidth = 80;
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(lastX,lastY);
@@ -376,12 +630,12 @@ function checkScratchComplete(){
   }
   const totalPixels = canvas.width * canvas.height;
   const scratchedPercent = (transparentPixels / totalPixels) * 100;
-  if(scratchedPercent > 80){ // Threshold for "completely scratched"
+  if(scratchedPercent > 45){ // Threshold for "completely scratched"
     document.getElementById("successMsg").style.display = "block";
     // Start 30-second timer for reveal button
     revealTimer = setTimeout(() => {
       document.getElementById("revealBtn").style.display = "block";
-    }, 30000); // 30 seconds
+    }, 20000); // 20 seconds
   }
 }
 
@@ -408,7 +662,89 @@ document.getElementById("revealBtn").addEventListener("click", ()=>{
   document.getElementById("clue").style.display = "block";
   document.getElementById("revealBtn").style.display = "none";
 });
+
+// Add event listener to submit button with debugging
+const submitBtn = document.getElementById("submitBtn");
+if (submitBtn) {
+  console.log("Submit button found."); // Debug log
+  submitBtn.addEventListener("click", () => {
+    console.log("Submit button clicked."); // Debug log
+    if (typeof window.submitRound1 === "function") {
+      console.log("submitRound1 function defined."); // Debug log
+      window.submitRound1();
+    } else {
+      console.error("submitRound1 function not defined."); // Debug log
+    }
+  });
+} else {
+  console.error("Submit button not found."); // Debug log
+}
 </script>
+<script>
+document.getElementById("revealPuzzle3Btn").addEventListener("click", () => {
+  document.getElementById("puzzle3Clue").style.display = "block";
+  document.getElementById("revealPuzzle3Btn").style.display = "none";
+});
+</script>
+<script>
+const playAudioBtn = document.getElementById("playAudioBtn");
+const awaitAudio = document.getElementById("awaitAudio");
+
+const audioControls = document.getElementById("audioControls");
+const pauseResumeBtn = document.getElementById("pauseResumeBtn");
+const downloadBtn = document.getElementById("downloadBtn");
+
+/* EXISTING LOGIC — UNTOUCHED */
+playAudioBtn.addEventListener("click", () => {
+  awaitAudio.play().catch(err => {
+    console.error("Audio playback failed:", err);
+  });
+
+  playAudioBtn.textContent = "AUDIO PLAYING";
+  playAudioBtn.disabled = true;
+  playAudioBtn.style.opacity = "0.6";
+  playAudioBtn.style.cursor = "default";
+
+  /* FORCE SHOW ICONS */
+  audioControls.style.display = "flex";
+});
+
+/* Pause / Resume toggle */
+pauseResumeBtn.addEventListener("click", () => {
+  if (!awaitAudio.paused) {
+    awaitAudio.pause();
+    pauseResumeBtn.src = "resume.png";
+    playAudioBtn.textContent = "AUDIO PAUSED";
+  } else {
+    awaitAudio.play();
+    pauseResumeBtn.src = "pause.png";
+    playAudioBtn.textContent = "AUDIO PLAYING";
+  }
+});
+
+
+/* Download audio */
+downloadBtn.addEventListener("click", () => {
+  const link = document.createElement("a");
+  link.href = "await.mp3";
+  link.download = "ciphertrace_audio.mp3";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
+</script>
+<script>
+const revealPuzzle4Btn = document.getElementById("revealPuzzle4Btn");
+const puzzle4Clue = document.getElementById("puzzle4Clue");
+
+if (revealPuzzle4Btn && puzzle4Clue) {
+  revealPuzzle4Btn.addEventListener("click", () => {
+    puzzle4Clue.style.display = "block";
+    revealPuzzle4Btn.style.display = "none";
+  });
+}
+</script>
+
 
 </body>
 </html>

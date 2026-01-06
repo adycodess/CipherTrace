@@ -72,12 +72,18 @@ function submitForm() {
     return;
   }
 
-  // Push creates a unique ID automatically
-  push(ref(db, "registrations"), {
+  // Sanitize email for Firebase key (replace dots with commas)
+  const sanitizedEmail = email.replace(/\./g, ',');
+
+  // Use set to ensure unique per email (updates if exists)
+  set(ref(db, "registrations/" + sanitizedEmail), {
     name: name,
     email: email,
     timestamp: Date.now()
   }).then(() => {
+    // Store email in localStorage for use in round1.html
+    localStorage.setItem("userEmail", email);
+    
     // On success, update navbar button to the email
     document.getElementById("navLogin").textContent = email;
     // Replace login section with greeting and typewriter text
@@ -254,4 +260,4 @@ if (isSignInWithEmailLink(auth, window.location.href)) {
 window.submitForm = submitForm;
 window.login = login;
 window.signInWithGoogle = signInWithGoogle;
-window.scrollToLogin = scrollToLogin
+window.scrollToLogin = scrollToLogin;
