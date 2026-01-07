@@ -6,326 +6,7 @@
 <title>CipherTrace | Round 1</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-  font-family:'Inter',sans-serif;
-  color:#e0e0e0;
-  background:#000;
-  /* Allow scrolling */
-  overflow-y: auto;
-}
-
-/* Background */
-.video-bg{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  z-index:-2;
-}
-.overlay{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.95));
-  z-index:-1;
-}
-
-/* ENTRY SCREEN */
-.entry-screen{
-  position:fixed;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:10;
-  background:rgba(0,0,0,.85);
-  backdrop-filter:blur(12px);
-  transition:opacity .6s ease, visibility .6s ease;
-}
-
-.entry-screen.hidden{
-  opacity:0;
-  visibility:hidden;
-}
-
-.entry-screen h1{
-  font-family:'Orbitron',sans-serif;
-  font-size:64px;
-  letter-spacing:6px;
-  color:#00ffff;
-  margin-bottom:30px;
-}
-
-.entry-screen button{
-  padding:18px 40px;
-  font-family:'Orbitron',sans-serif;
-  font-size:16px;
-  letter-spacing:3px;
-  border-radius:20px;
-  border:1px solid rgba(0,255,255,.5);
-  background:rgba(0,255,255,.1);
-  color:#00ffff;
-  cursor:pointer;
-}
-
-/* TIMER */
-.timer-box{
-  position:fixed;
-  top:18px;
-  right:6vw;
-  z-index:6;
-  font-family:'Orbitron',sans-serif;
-  font-size:14px;
-  letter-spacing:2px;
-  color:#00ffff;
-  display:none;
-}
-
-/* NAVBAR */
-.navbar{
-  position:fixed;
-  top:0;
-  width:100%;
-  padding:18px 6vw;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  z-index:5;
-  background:rgba(0,0,0,.35);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(0,255,255,.15);
-}
-.navbar span{
-  font-family:'Orbitron',sans-serif;
-  letter-spacing:3px;
-  color:#00ffff;
-}
-
-/* Section */
-.section{
-  padding:120px 6vw;
-  display:flex;
-  justify-content:center;
-}
-
-/* Card */
-.card{
-  width:100%;
-  max-width:900px;
-  background:rgba(10,14,18,.38);
-  backdrop-filter:blur(16px);
-  border-radius:28px;
-  padding:40px;
-  border:1px solid rgba(0,255,255,.28);
-  box-shadow:0 0 40px rgba(0,255,255,.18);
-}
-
-/* Title */
-.section-title{
-  font-family:'Orbitron',sans-serif;
-  font-size:14px;
-  letter-spacing:2px;
-  color:#00ffff;
-  margin-bottom:20px;
-}
-
-/* Scratch */
-.scratch-container{
-  position:relative;
-  width:100%;
-  border-radius:22px;
-  overflow:hidden;
-  border:1px solid rgba(0,255,255,.25);
-}
-.scratch-container img{
-  width:100%;
-  display:block;
-}
-#scratchCanvas{
-  position:absolute;
-  inset:0;
-  cursor:crosshair;
-}
-
-/* Instruction */
-.instruction{
-  margin-top:18px;
-  font-size:14px;
-  letter-spacing:1px;
-  color:#9fb0c3;
-  text-align:center;
-}
-
-/* Reveal Button */
-.reveal-btn{
-  margin:20px auto 0;
-  display:block;
-  padding:15px 30px;
-  font-family:'Orbitron',sans-serif;
-  font-size:14px;
-  letter-spacing:2px;
-  border-radius:10px;
-  border:1px solid rgba(0,255,255,.5);
-  background:rgba(0,255,255,.1);
-  color:#00ffff;
-  cursor:pointer;
-  transition:background 0.3s ease;
-  display:none;
-}
-
-.reveal-btn:hover{
-  background:rgba(0,255,255,.2);
-}
-
-/* Clue */
-.clue{
-  margin-top:20px;
-  padding:20px;
-  background:rgba(10,14,18,.5);
-  border-radius:10px;
-  border:1px solid rgba(0,255,255,.3);
-  font-size:18px;
-  letter-spacing:2px;
-  color:#00ffff;
-  text-align:center;
-  display:none;
-}
-
-/* Success Message */
-.success-msg{
-  margin-top:20px;
-  font-size:16px;
-  letter-spacing:1px;
-  color:#00ff00;
-  text-align:center;
-  display:none;
-}
-
-/* Riddle Section */
-.riddle-section{
-  padding:120px 6vw 200px; /* Extra bottom padding for scrolling */
-  display:flex;
-  justify-content:center;
-}
-
-.riddle-card{
-  width:100%;
-  max-width:900px;
-  background:rgba(10,14,18,.38);
-  backdrop-filter:blur(16px);
-  border-radius:28px;
-  padding:40px;
-  border:1px solid rgba(0,255,255,.28);
-  box-shadow:0 0 40px rgba(0,255,255,.18);
-  text-align:center;
-}
-
-.riddle-text{
-  font-size:18px;
-  letter-spacing:1px;
-  color:#e0e0e0;
-  margin-bottom:30px;
-  line-height:1.6;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:10px;
-}
-
-.inline-input{
-  width:150px;
-  padding:8px;
-  font-family:'Inter',sans-serif;
-  font-size:16px;
-  border-radius:5px;
-  border:1px solid rgba(0,255,255,.5);
-  background:rgba(0,255,255,.1);
-  color:#00ffff;
-  text-align:center;
-  outline:none;
-}
-
-.submit-btn{
-  padding:15px 30px;
-  font-family:'Orbitron',sans-serif;
-  font-size:14px;
-  letter-spacing:2px;
-  border-radius:10px;
-  border:1px solid rgba(0,255,255,.5);
-  background:rgba(0,255,255,.1);
-  color:#00ffff;
-  cursor:pointer;
-  transition:background 0.3s ease;
-}
-
-.submit-btn:hover{
-  background:rgba(0,255,255,.2);
-}
-
-/* Submission Status */
-.submission-status{
-  margin-top:20px;
-  font-size:14px;
-  color:#00ff9d;
-  text-align:center;
-  display:none;
-}
-
-/* Instagram Button */
-.insta-button{
-  display:inline-block;
-  margin-top:25px;
-  padding:15px 34px;
-  font-family:'Orbitron',sans-serif;
-  font-size:14px;
-  letter-spacing:2px;
-  color:#00ffff;
-  text-decoration:none;
-  border-radius:14px;
-  border:1px solid rgba(0,255,255,.55);
-  background:rgba(0,255,255,.08);
-  backdrop-filter:blur(8px);
-  transition:all .35s ease;
-  box-shadow:0 0 18px rgba(0,255,255,.18);
-}
-
-.insta-button:hover{
-  background:rgba(0,255,255,.18);
-  box-shadow:0 0 30px rgba(0,255,255,.35);
-  transform:translateY(-2px);
-}
-
-.action{
-  text-align:center;
-}
-
-.audio-controls {
-  margin-top: 16px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.audio-icon {
-  width: 32px;
-  height: 32px;
-  cursor: pointer;
-  opacity: 0.85;
-  transition: opacity 0.2s ease;
-}
-
-.audio-icon:hover {
-  opacity: 1;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -346,11 +27,34 @@ body{
 
 <!-- NAVBAR -->
 <div class="navbar">
-  <span>CipherTrace</span>
+  <span>CIPHERTRACE — ROUND 1: SYSTEM RECOVERY</span>
 </div>
 
-<!-- ROUND CONTENT -->
-<div class="section">
+<!-- INTRO STORY STEP -->
+<div class="section active" id="step-intro">
+    <div class="card">
+        <span class="timestamp">02:13 IST</span>
+        <div class="story-text">
+            The Specter did not erase the system. <br>
+            They turned it against itself. <br><br>
+            What once faced forward now looks back. <br>
+            Restore the system’s orientation. <br><br>
+            What you see is not wrong — <br>
+            it is facing the wrong direction.
+        </div>
+
+        <div class="status-box">
+            <span class="status-line">SYSTEM STATUS: UNSTABLE</span>
+            <span class="status-line">MODULE: CORE_DISPLAY</span>
+            <span class="status-line">ERROR: ORIENTATION_MISMATCH</span>
+        </div>
+
+        <button class="next-btn" onclick="nextStep('step-intro', 'step-p1')">INITIATE RECOVERY</button>
+    </div>
+</div>
+
+<!-- PUZZLE 1: SYSTEM TRACE -->
+<div class="section" id="step-p1">
   <div class="card">
     <div class="section-title">PUZZLE 1 — SYSTEM TRACE</div>
 
@@ -359,392 +63,439 @@ body{
       <canvas id="scratchCanvas"></canvas>
     </div>
 
-    <div class="instruction">
-      Scratch the surface to reveal. Observe carefully.
+    <div class="instruction">Scratch the surface to reveal. Observe carefully.</div>
+    <div class="clue" id="clue" style="display:none;">
+  Thala for a reason
+</div>
+
+<div class="instruction" id="scratchStatus">
+  Scratch at least 45% to stabilize the system.
+</div>
+
+    <div class="answer-box-wrapper">
+        <input type="text" class="puzzle-input" id="ans1" placeholder="Enter answer...">
+        <button class="submit-answer-btn" onclick="submitPuzzle1()">SUBMIT</button>
     </div>
 
-    <div class="success-msg" id="successMsg">Card revealed successfully</div>
-
-    <button class="reveal-btn" id="revealBtn">REVEAL CLUE</button>
-
-    <div class="clue" id="clue">Hint: Thala for a reason</div>
   </div>
 </div>
 
-<div class="section">
+<!-- STORY CONTEXT BEFORE PUZZLE 2 -->
+<section class="section" id="story-bridge">
+<div class="card" style="width: 100%; max-width: 900px; background: rgba(10, 14, 18, 0.38); backdrop-filter: blur(16px); border-radius: 28px; padding: 40px; border: 1px solid rgba(0, 255, 255, 0.28); box-shadow: 0 0 40px rgba(0, 255, 255, 0.18); position: relative; overflow: hidden; transition: box-shadow 0.2s ease;">
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">The core interface is stable.</p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Orientation packets are now aligned.</p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    But during realignment,<br>
+    the outbound stream was rerouted.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Text-based channels failed first.</p>
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Only visual packets continued to sync.</p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    The system chose a feed.<br>
+    Not a log.<br>
+    Not a terminal.<br>
+    A feed.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 30px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    This tells participants:<br>
+    the system is alive.<br>
+    communication is the problem now.
+  </p>
+
+  <hr style="margin: 30px 0; opacity: 0.2; border: none; height: 1px; background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(255, 255, 0, 0.5));">
+
+  <h1 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: clamp(48px, 8vw, 64px); letter-spacing: 6px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: glitch 2s infinite alternate;">CIPHERTRACE</h1>
+  <h2 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: 24px; letter-spacing: 4px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);">ROUND 1 — SIGNAL ANALYSIS</h2>
+
+  <div style="margin-top: 20px; padding: 12px; border: 1px solid rgba(255, 0, 0, 0.5); background: rgba(255, 0, 0, 0.1); max-width: 320px; margin-left: auto; margin-right: auto; border-radius: 8px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); font-family: 'Courier New', monospace; font-size: 0.9rem; color: #ff4d4d; position: relative;">
+    <span style="content: '[ERROR] '; color: #ff4d4d; font-weight: bold; position: absolute; top: -10px; left: 10px; background: #000; padding: 2px 5px; border-radius: 8px;"></span>
+    <p style="margin-bottom: 5px;"><strong style="color: #ff6666;">MODULE:</strong> SIGNAL_LAYER</p>
+    <p style="margin-bottom: 5px;"><strong style="color: #ff6666;">STATUS:</strong> DEGRADED</p>
+    <p><strong style="color: #ff6666;">ERROR:</strong> NOISE_OVERFLOW</p>
+  </div>
+  <button class="next-btn" onclick="nextStep('story-bridge', 'step-p2')">
+  INITIATE SIGNAL ANALYSIS
+</button>
+  <!-- Scanline effect overlay -->
+  <div style="content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 3px); pointer-events: none; opacity: 0.4; animation: scanline 3s linear infinite;"></div>
+</div>
+
+<!-- Inline keyframes for animations (add to <style> or head if needed) -->
+<style>
+@keyframes typeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes glitch { 0% { transform: translateX(0); } 20% { transform: translateX(-2px); } 40% { transform: translateX(2px); } 60% { transform: translateX(-1px); } 80% { transform: translateX(1px); } 100% { transform: translateX(0); } }
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+</style>
+</section>
+
+<!-- PUZZLE 2: INSTAGRAM DISCOVER -->
+<div class="section" id="step-p2">
   <div class="card">
     <div class="section-title">PUZZLE 2 — INSTAGRAM DISCOVER</div>
 
     <div class="instruction">
       <ul>
-        <li>This answer does not exist on this page.</li>
-        <li>Visit our Instagram posts and look beyond captions that try to distract you.</li>
-        <li>Ignore what sounds dramatic or misleading.</li>
-        <li>Identify the single idea that quietly repeats itself across posts.</li>
+        <li>Visit our Instagram posts and look beyond captions.</li>
+        <li>Identify the single idea that quietly repeats itself.</li>
         <li>When everything else fades into noise, one word still stands.</li>
       </ul>
     </div>
 
-    <div class="action">
-    <a 
-    href="https://www.instagram.com/womenintech.iitm/" 
-    target="_blank" 
-    class="insta-button">
+    <div style="text-align: center;">
+  <button style="display: inline-block; margin-top: 25px; padding: 15px 34px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: #00ffff; text-decoration: none; border-radius: 14px; border: 1px solid rgba(0, 255, 255, 0.55); background: rgba(0, 255, 255, 0.08); backdrop-filter: blur(8px); transition: background 0.3s ease, box-shadow 0.3s ease; cursor: pointer;">
     OPEN INSTAGRAM PAGE
-    </a>
-    </div>
+  </button>
+</div>
 
+
+    <div class="answer-box-wrapper">
+      <input type="text" class="puzzle-input" id="ans2" placeholder="Enter word...">
+      <button class="submit-answer-btn" onclick="submitPuzzle2()">SUBMIT</button>
+    </div>
   </div>
 </div>
 
-<div class="section">
+
+<!-- PUZZLE 3: FRAGMENTED QUOTES -->
+ <!-- STORY CONTEXT BEFORE PUZZLE 3 -->
+<section class="section" id="story-p3-bridge">
+  <div class="card" style="width: 100%; max-width: 900px; background: rgba(10, 14, 18, 0.38); backdrop-filter: blur(16px); border-radius: 28px; padding: 40px; border: 1px solid rgba(0, 255, 255, 0.28); box-shadow: 0 0 40px rgba(0, 255, 255, 0.18); position: relative; overflow: hidden; transition: box-shadow 0.2s ease;">
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">The feed stabilized.</p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    Packets are no longer lost.<br>
+    Noise has settled.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    But meaning is not verified in a moment.<br>
+    It is verified over time.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    The system logged multiple transmissions.<br>
+    Not all at once.<br>
+    One after another.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 30px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out; opacity: 0.75;">
+    This confirms why the signal is distributed across days.
+  </p>
+
+  <hr style="margin: 30px 0; opacity: 0.2; border: none; height: 1px; background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(255, 255, 0, 0.5));">
+
+  <h1 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: clamp(48px, 8vw, 64px); letter-spacing: 6px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: glitch 2s infinite alternate;">CIPHERTRACE</h1>
+  <h2 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: 24px; letter-spacing: 4px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);">ROUND 1 — TEMPORAL CONSISTENCY CHECK</h2>
+
+  <div style="margin-top: 20px; padding: 12px; border: 1px solid rgba(0, 255, 255, 0.3); background: rgba(0, 0, 0, 0.7); max-width: 360px; margin-left: auto; margin-right: auto; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 255, 255, 0.2); font-family: 'Courier New', monospace; font-size: 0.9rem; color: #e0e0e0;">
+    <p style="margin-bottom: 5px;"><strong style="color: #00ffff;">MODULE:</strong> SEMANTIC_LAYER</p>
+    <p style="margin-bottom: 5px;"><strong style="color: #00ffff;">STATE:</strong> MONITORING</p>
+    <p><strong style="color: #00ffff;">CHECK:</strong> TIME-BASED CONSISTENCY</p>
+  </div>
+
+  <button class="next-btn" onclick="nextStep('story-p3-bridge', 'step-p3')" style="display: block; margin: 20px auto 0; padding: 15px 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); color: #00ffff; cursor: pointer; transition: background 0.2s ease, box-shadow 0.2s ease;">
+    BEGIN TEMPORAL ANALYSIS
+  </button>
+
+  <!-- Scanline effect overlay -->
+  <div style="content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 3px); pointer-events: none; opacity: 0.4; animation: scanline 3s linear infinite;"></div>
+</div>
+
+<!-- Inline keyframes for animations (add to <style> or head if needed) -->
+<style>
+@keyframes typeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes glitch { 0% { transform: translateX(0); } 20% { transform: translateX(-2px); } 40% { transform: translateX(2px); } 60% { transform: translateX(-1px); } 80% { transform: translateX(1px); } 100% { transform: translateX(0); } }
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+</style>
+</section>
+
+<div class="section" id="step-p3">
   <div class="card">
     <div class="section-title">PUZZLE 3 — FRAGMENTED QUOTES</div>
 
     <div class="instruction">
-      <p>This puzzle does not exist in one place. <br>
-
-      Fragments of quotes are hidden across multiple platforms-
-      Instagram posts, story highlights, captions and comments.
-
-      Each fragment belongs to a larger thought spoken by someone famous.
-      The quotes are scattered, incomplete, and separated by noise.
-      To solve this puzzle, you must find and read all of them.
-
+      Fragments of quotes are hidden across Instagram posts, highlights, and comments. 
       Across every quote, one word quietly survives every line.
-      
-    </p>  
     </div>
 
-    <div class="action">
-    <button class="reveal-btn" id="revealPuzzle3Btn" style="display:block;">
-      REVEAL HINT
+    <button class="reveal-btn" id="revealPuzzle3Btn">REVEAL HINT</button>
+    <div class="clue" id="puzzle3Clue">A word that survived every line. Find the final five lines.</div>
+
+    <div class="answer-box-wrapper">
+        <input type="text" class="puzzle-input" id="ans3" placeholder="Enter word...">
+        <button class="next-btn" onclick="nextStep('step-p3', 'story-p4-bridge')">
+          SUBMIT
+        </button>
+    </div>
+  </div>
+</div>
+
+<!-- PUZZLE 4: AUDIO TRACE -->
+ <!-- STORY CONTEXT AFTER PUZZLE 3 -->
+<section class="section" id="story-p4-bridge">
+  <div class="card" style="width: 100%; max-width: 900px; background: rgba(10, 14, 18, 0.38); backdrop-filter: blur(16px); border-radius: 28px; padding: 40px; border: 1px solid rgba(0, 255, 255, 0.28); box-shadow: 0 0 40px rgba(0, 255, 255, 0.18); position: relative; overflow: hidden; transition: box-shadow 0.2s ease;">
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">The system’s meaning has been verified.</p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    Packets are intact.<br>
+    Transmission is stable.<br>
+    Intent is consistent.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    Yet the system does not proceed.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+    Something is holding it back.
+  </p>
+
+  <p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 30px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out; opacity: 0.75;">
+    Everything works.<br>
+    Progress is blocked for a different reason.
+  </p>
+
+  <hr style="margin: 30px 0; opacity: 0.2; border: none; height: 1px; background: linear-gradient(to right, rgba(0, 255, 255, 0.5), rgba(255, 255, 0, 0.5));">
+
+  <h1 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: clamp(48px, 8vw, 64px); letter-spacing: 6px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: glitch 2s infinite alternate;">CIPHERTRACE</h1>
+  <h2 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: 24px; letter-spacing: 4px; color: #00ffff; margin-bottom: 20px; text-shadow: 0 0 15px rgba(0, 255, 255, 0.4);">ROUND 1 — ACCESS CONTROL</h2>
+
+  <div style="margin-top: 20px; padding: 12px; border: 1px solid rgba(255, 0, 0, 0.5); background: rgba(255, 0, 0, 0.1); max-width: 360px; margin-left: auto; margin-right: auto; border-radius: 8px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.3); font-family: 'Courier New', monospace; font-size: 0.9rem; color: #ff4d4d; position: relative;">
+    <span style="content: '[ERROR] '; color: #ff4d4d; font-weight: bold; position: absolute; top: -10px; left: 10px; background: #000; padding: 2px 5px; border-radius: 8px;"></span>
+    <p style="margin-bottom: 5px;"><strong style="color: #ff6666;">MODULE:</strong> AUTHORIZATION_LAYER</p>
+    <p style="margin-bottom: 5px;"><strong style="color: #ff6666;">STATE:</strong> LOCKED</p>
+    <p><strong style="color: #ff6666;">REASON:</strong> PENDING_VERIFICATION</p>
+  </div>
+
+  <!-- Scanline effect overlay -->
+  <div style="content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(to bottom, transparent, transparent 2px, rgba(255, 255, 255, 0.02) 3px); pointer-events: none; opacity: 0.4; animation: scanline 3s linear infinite;"></div>
+
+   <button class="next-btn" onclick="nextStep('story-p4-bridge', 'step-p4')">
+      REQUEST ACCESS
     </button>
-
-    <div class="clue" id="puzzle3Clue">
-    A word that survived every line.<br>
-    To find the word, go forth, soldier.<br>
-    Find the final five lines.
-    </div>
-</div>
-</div>
 </div>
 
-<div class="section">
+<!-- Inline keyframes for animations (add to <style> or head if needed) -->
+<style>
+@keyframes typeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes glitch { 0% { transform: translateX(0); } 20% { transform: translateX(-2px); } 40% { transform: translateX(2px); } 60% { transform: translateX(-1px); } 80% { transform: translateX(1px); } 100% { transform: translateX(0); } }
+@keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+</style>
+    
+   
+  
+  
+</section>
+
+<div class="section" id="step-p4">
   <div class="card">
     <div class="section-title">PUZZLE 4 — AUDIO TRACE</div>
 
     <div class="instruction">
-      <p>
-        This answer is not visible.<br>
-        It must be heard.<br><br>
-        The message you are searching for is hidden within the noise.<br>
-        To uncover it, you must reverse the audio and listen carefully.<br>
-        Do not focus on distortion alone: focus on what remains consistent when the sound is played correctly.
-      </p>
+      The message is hidden within the noise.<br>
+      To uncover it, you must reverse the audio and listen carefully.
     </div>
 
-    <!-- AUDIO ACTION -->
-    <div class="action">
-      <button class="reveal-btn" id="playAudioBtn" style="display:block;">
-        PLAY AUDIO
-      </button>
+    <div style="text-align: center; margin-top: 20px;">
 
-      <audio id="awaitAudio">
-        <source src="await.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-      </audio>
+      <!-- Reveal Button -->
+      <button id="revealAudioBtn" style="margin: 20px auto 0; display: block; padding: 15px 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); color: #00ffff; cursor: pointer; transition: background 0.2s ease, box-shadow 0.2s ease;">REVEAL AUDIO</button>
 
-      <div class="audio-controls" id="audioControls" style="display:none;">
-        <img src="pause.png" id="pauseResumeBtn" class="audio-icon" alt="Pause Audio">
-        <img src="down.png" id="downloadBtn" class="audio-icon" alt="Download Audio">
+      <!-- Audio Controls (hidden by default) -->
+      <div id="audioControls" style="display: none; justify-content: center; gap: 20px; margin-top: 20px;">
+        <img id="pauseBtn" src="pause.png" class="audio-icon" alt="Pause" style="width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s ease; padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);">
+        <img id="resumeBtn" src="resume.png" class="audio-icon" alt="Resume" style="display: none; width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s ease; padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);">
+        <img id="downloadBtn" src="down.png" class="audio-icon" alt="Download" style="width: 32px; height: 32px; cursor: pointer; transition: transform 0.2s ease; padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);">
       </div>
+
+      <!-- Audio Element -->
+      <audio id="awaitAudio" src="await.mp3"></audio>
+
     </div>
 
-    <!-- HINT ACTION -->
-    <div class="action">
-      <button class="reveal-btn" id="revealPuzzle4Btn" style="display:block;">
-        REVEAL HINT
-      </button>
+    <div class="clue" id="puzzle4Clue">
+      Reverse what you hear. The word reveals itself when signal is restored.
+    </div>
 
-      <div class="clue" id="puzzle4Clue">
-        Decode the distortion.<br>
-        Reverse what you hear.<br>
-        The word reveals itself only when the signal is restored.
-      </div>
+    <!-- Answer Input -->
+    <div class="answer-box-wrapper">
+      <input
+        type="text"
+        class="puzzle-input"
+        id="ans4"
+        placeholder="Enter word..."
+      >
+      <button class="next-btn" onclick="nextStep('step-p4', 'story-p5-bridge')">
+        SUBMIT
+      </button>
     </div>
 
   </div>
 </div>
+<!-- STORY CONTEXT BEFORE PUZZLE 5 -->
+<div class="section" id="story-p5-bridge">
+  <div class="card">
 
+    <div class="section-title" style="font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: #00ffff; margin-bottom: 20px; text-transform: uppercase;">
+  PATH RESTORATION & INTEGRITY CHECK
+</div>
 
+<p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Authorization acknowledged.</p>
 
-<!-- RIDDLE SECTION -->
-<div class="riddle-section">
+<p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">
+  All system layers are active.<br>
+  Nothing is blocked.
+</p>
+
+<p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Yet access is not granted.</p>
+
+<p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;"
+  The destination exists.<br>
+  The data exists.
+</p>
+
+<p style="font-family: 'Courier New', monospace; line-height: 1.6; margin-bottom: 15px; color: #00ff00; font-size: 1rem; background: rgba(0, 0, 0, 0.8); border-left: 4px solid #00ffff; padding: 10px; border-radius: 8px; box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); animation: typeIn 2s ease-out;">Only the path has been disturbed.</p>
+<hr style="margin: 30px 0; opacity: 0.2; border: none; border-top: 1px solid rgba(255, 255, 255, 0.2);">
+
+<div style="margin-top: 20px; padding: 12px; border: 1px solid rgba(255, 255, 255, 0.2); max-width: 360px; margin-left: auto; margin-right: auto; background: rgba(0, 0, 0, 0.5); border-radius: 8px; font-family: 'Courier New', monospace; color: #e0e0e0;">
+  <p style="margin-bottom: 5px;"><strong style="color: #00ffff;">MODULE:</strong> ACCESS_LAYER</p>
+  <p style="margin-bottom: 5px;"><strong style="color: #00ffff;">STATE:</strong> FRAGMENTED</p>
+  <p><strong style="color: #ff4d4d;">ERROR:</strong> PATH_ORDER_MISMATCH</p>
+</div>
+
+<div class="instruction" style="margin-top: 30px; font-size: 14px; letter-spacing: 1px; color: #9fb0c3; text-align: center; font-family: 'Courier New', monospace; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);">
+  <ul style="list-style: none; padding: 0; margin: 0; text-align: left; display: inline-block;">
+    <li>Replace <code style="color: #00ffff;">[ dot ]</code> → <code style="color: #00ffff;">.</code></li>
+    <li>Replace <code style="color: #00ffff;">[ ? ]</code> → <code style="color: #00ffff;">?</code></li>
+    <li>Remove spaces and line breaks</li>
+    <li>Reconstruct the correct URL</li>
+  </ul>
+</div>
+
+<div style="display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap;">
+
+  <!-- URL Container -->
+  <div id="urlContainer"
+    style="margin-top:20px;
+           font-family:'Courier New', monospace;
+           opacity:0.85;
+           text-align:center;
+           color:#00ffff;
+           font-size:16px;
+           letter-spacing:1px;
+           padding:15px 20px;
+           border:1px solid rgba(0,255,255,0.4);
+           border-radius:8px;
+           background:rgba(0,0,0,0.5);
+           transition:all 0.3s ease;">
+
+    https://drive.google.com/drive/u/0/folders/
+    <input type="text" id="frag1" maxlength="4" placeholder="[ ? ]"
+      style="width:60px;
+             background:rgba(0,0,0,0.3);
+             border:1px solid #00ffff;
+             color:#00ffff;
+             border-radius:4px;
+             text-align:center;
+             font-family:'Courier New', monospace;
+             outline:none;">
+    kR2ugPpRXNdHcDqmUoq
+    <input type="text" id="frag2" maxlength="4" placeholder="[ ? ]"
+      style="width:60px;
+             background:rgba(0,0,0,0.3);
+             border:1px solid #00ffff;
+             color:#00ffff;
+             border-radius:4px;
+             text-align:center;
+             font-family:'Courier New', monospace;
+             outline:none;">
+    X1QU3v
+  </div>
+
+  <!-- Check Button -->
+  <button id="checkStatusBtn"
+    style="padding:14px 22px;
+           font-family:'Orbitron', sans-serif;
+           font-size:13px;
+           letter-spacing:2px;
+           border-radius:8px;
+           border:1px solid rgba(0,255,255,0.6);
+           background:rgba(0,0,0,0.4);
+           color:#00ffff;
+           cursor:pointer;">
+    CHECK STATUS
+  </button>
+
+</div>
+
+<div id="linkStatus"
+  style="margin-top:16px;
+         text-align:center;
+         font-family:'Courier New', monospace;
+         font-size:14px;
+         letter-spacing:1px;">
+</div>
+
+<div class="instruction">
+  The path was restored.<br>The data is still hidden.
+</div>
+
+<button class="next-btn" onclick="nextStep('story-p5-bridge', 'step-p5')" style="margin: 20px auto 0; display: block; padding: 15px 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); color: #00ffff; cursor: pointer; transition: background 0.2s ease, box-shadow 0.2s ease;">
+  SUBMIT
+</button>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const dot1 = document.getElementById("dot1");
+    const dot2 = document.getElementById("dot2");
+    const question = document.getElementById("question");
+    const urlContainer = document.getElementById("urlContainer");
+
+    function checkUrl() {
+      if (dot1.value === "." && dot2.value === "." && question.value === "?") {
+        // Replace with clickable link
+        urlContainer.innerHTML = '<a href="https://drive.google.com/drive/folders/M144?usp=sharing" target="_blank" style="color: #00ff9d; text-decoration: none; font-family: \'Courier New\', monospace; font-size: 16px; letter-spacing: 1px;">https://drive.google.com/drive/folders/M144?usp=sharing</a>';
+      }
+    }
+
+    dot1.addEventListener("input", checkUrl);
+    dot2.addEventListener("input", checkUrl);
+    question.addEventListener("input", checkUrl);
+  });
+</script>
+
+  </div>
+</div>
+
+<!-- PUZZLE 5: THE RIDDLE (FINAL) -->
+<div class="section" id="step-p5">
   <div class="riddle-card">
+    <div class="section-title">PUZZLE 5 — FINAL SYSTEM SYNC</div>
     <div class="riddle-text">
-      The <input type="text" class="inline-input" id="input1" placeholder="answer"> <input type="text" class="inline-input" id="input2" placeholder="answer"> . Your <input type="text" class="inline-input" id="input3" placeholder="answer"> <input type="text" class="inline-input" id="input4" placeholder="answer"> . <input type="text" class="inline-input" id="input5" placeholder="answer"> .
+      The <input type="text" class="inline-input" id="input1" placeholder="ans 1"> <input type="text" class="inline-input" id="input2" placeholder="ans 2"> . Your <input type="text" class="inline-input" id="input3" placeholder="ans 3"> <input type="text" class="inline-input" id="input4" placeholder="ans 4"> . <input type="text" class="inline-input" id="input5" placeholder="ans 5"> .
     </div>
-    <button class="submit-btn" id="submitBtn" onclick="submitRound1()">SUBMIT ANSWER</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitRound1()">FINISH STORY & SUBMIT</button>
     <div class="submission-status" id="submissionStatus"></div>
   </div>
 </div>
 
-<!-- Firebase SDK -->
-<script type="module">
-  // Import Firebase core
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  // Import Realtime Database functions
-  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+<!-- SUCCESS STEP -->
+<div class="section" id="step-end">
+    <div class="card" style="text-align:center;">
+        <h1 style="color:#00ffff; font-family:'Orbitron'; margin-bottom:20px;">RECOVERY COMPLETE</h1>
+        <p class="story-text">The system orientation has been restored. The Specter's trail continues elsewhere.</p>
+    </div>
+</div>
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAoFcqKMYnU1pfF8pVBk6oxusVxgAzb1oQ",
-    authDomain: "ciphertrace-26b33.firebaseapp.com",
-    databaseURL: "https://ciphertrace-26b33-default-rtdb.firebaseio.com",
-    projectId: "ciphertrace-26b33",
-    storageBucket: "ciphertrace-26b33.firebasestorage.app",
-    messagingSenderId: "965143042848",
-    appId: "1:965143042848:web:959bd072875b52e20e1545"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  // Initialize Realtime Database
-  const db = getDatabase(app);
-
-  console.log("Firebase initialized successfully."); // Debug log
-
-  // Retrieve user email from localStorage
-  const userEmail = localStorage.getItem("userEmail");
-  console.log("Retrieved userEmail from localStorage:", userEmail); // Debug log
-  let sanitizedEmail;
-  if (userEmail) {
-    sanitizedEmail = userEmail.replace(/\./g, ',');
-    console.log("Sanitized email:", sanitizedEmail); // Debug log
-  } else {
-    console.warn("No userEmail found in localStorage. User may not be logged in."); // Debug log
-  }
-
-  // Function to submit Round 1 answers
-  function submitRound1() {
-    console.log("submitRound1 called."); // Debug log
-
-    if (!userEmail || !sanitizedEmail) {
-      alert("User not logged in. Please log in from the main page.");
-      console.error("Submission blocked: No userEmail or sanitizedEmail."); // Debug log
-      return;
-    }
-
-    const ans1 = document.getElementById("input1").value.trim();
-    const ans2 = document.getElementById("input2").value.trim();
-    const ans3 = document.getElementById("input3").value.trim();
-    console.log("Collected answers:", ans1, ans2, ans3); // Debug log
-
-    if (!ans1 || !ans2 || !ans3) {
-      alert("Please fill all answer fields.");
-      console.warn("Submission blocked: Empty answers."); // Debug log
-      return;
-    }
-
-    const dataToStore = {
-      answers: [ans1, ans2, ans3],
-      time: seconds  // Global seconds from timer
-    };
-    console.log("Data to store:", dataToStore); // Debug log
-
-    try {
-      // Store answers and time in Firebase under the user's email
-      set(ref(db, "registrations/" + sanitizedEmail + "/round1"), dataToStore)
-        .then(() => {
-          console.log("Firebase set() successful."); // Debug log
-          document.getElementById("submissionStatus").textContent = "Successfully submitted Round 1";
-          document.getElementById("submissionStatus").style.display = "block";
-          document.getElementById("submitBtn").disabled = true;
-          document.getElementById("submitBtn").textContent = "SUBMITTED";
-        })
-        .catch(err => {
-          console.error("Firebase set() error:", err); // Debug log
-          alert("Error submitting answers: " + err.message);
-        });
-    } catch (error) {
-      console.error("Unexpected error in submitRound1:", error); // Debug log
-      alert("Unexpected error: " + error.message);
-    }
-  }
-
-  // Make function global
-  window.submitRound1 = submitRound1;
-</script>
-
-<script>
-/* ENTRY + TIMER */
-let seconds = 0;
-let timerInterval;
-
-function enterRound(){
-  document.getElementById("entryScreen").classList.add("hidden");
-  document.getElementById("timer").style.display = "block";
-
-  timerInterval = setInterval(() => {
-    seconds++;
-    const min = String(Math.floor(seconds / 60)).padStart(2,"0");
-    const sec = String(seconds % 60).padStart(2,"0");
-    document.getElementById("timer").textContent = `${min}:${sec}`;
-  }, 1000);
-}
-
-/* SCRATCH LOGIC */
-const canvas = document.getElementById("scratchCanvas");
-const img = document.getElementById("hiddenImage");
-const ctx = canvas.getContext("2d");
-
-let scratching = false, lastX = 0, lastY = 0;
-let revealTimer;
-
-function resizeCanvas(){
-  canvas.width = img.clientWidth;
-  canvas.height = img.clientHeight;
-  ctx.fillStyle = "#0a0e12";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-}
-img.onload = resizeCanvas;
-window.addEventListener("resize", resizeCanvas);
-
-function scratchLine(x,y){
-  ctx.globalCompositeOperation = "destination-out";
-  ctx.lineWidth = 80;
-  ctx.lineCap = "round";
-  ctx.beginPath();
-  ctx.moveTo(lastX,lastY);
-  ctx.lineTo(x,y);
-  ctx.stroke();
-}
-
-function checkScratchComplete(){
-  const imageData = ctx.getImageData(0,0,canvas.width,canvas.height);
-  const data = imageData.data;
-  let transparentPixels = 0;
-  for(let i = 3; i < data.length; i += 4){
-    if(data[i] === 0) transparentPixels++;
-  }
-  const totalPixels = canvas.width * canvas.height;
-  const scratchedPercent = (transparentPixels / totalPixels) * 100;
-  if(scratchedPercent > 45){ // Threshold for "completely scratched"
-    document.getElementById("successMsg").style.display = "block";
-    // Start 30-second timer for reveal button
-    revealTimer = setTimeout(() => {
-      document.getElementById("revealBtn").style.display = "block";
-    }, 20000); // 20 seconds
-  }
-}
-
-canvas.addEventListener("mousedown",e=>{
-  scratching = true;
-  const r = canvas.getBoundingClientRect();
-  lastX = e.clientX - r.left;
-  lastY = e.clientY - r.top;
-});
-canvas.addEventListener("mouseup",()=>{
-  scratching = false;
-  checkScratchComplete();
-});
-canvas.addEventListener("mousemove",e=>{
-  if(!scratching) return;
-  const r = canvas.getBoundingClientRect();
-  const x = e.clientX - r.left;
-  const y = e.clientY - r.top;
-  scratchLine(x,y);
-  lastX = x; lastY = y;
-});
-
-document.getElementById("revealBtn").addEventListener("click", ()=>{
-  document.getElementById("clue").style.display = "block";
-  document.getElementById("revealBtn").style.display = "none";
-});
-
-// Add event listener to submit button with debugging
-const submitBtn = document.getElementById("submitBtn");
-if (submitBtn) {
-  console.log("Submit button found."); // Debug log
-  submitBtn.addEventListener("click", () => {
-    console.log("Submit button clicked."); // Debug log
-    if (typeof window.submitRound1 === "function") {
-      console.log("submitRound1 function defined."); // Debug log
-      window.submitRound1();
-    } else {
-      console.error("submitRound1 function not defined."); // Debug log
-    }
-  });
-} else {
-  console.error("Submit button not found."); // Debug log
-}
-</script>
-<script>
-document.getElementById("revealPuzzle3Btn").addEventListener("click", () => {
-  document.getElementById("puzzle3Clue").style.display = "block";
-  document.getElementById("revealPuzzle3Btn").style.display = "none";
-});
-</script>
-<script>
-const playAudioBtn = document.getElementById("playAudioBtn");
-const awaitAudio = document.getElementById("awaitAudio");
-
-const audioControls = document.getElementById("audioControls");
-const pauseResumeBtn = document.getElementById("pauseResumeBtn");
-const downloadBtn = document.getElementById("downloadBtn");
-
-/* EXISTING LOGIC — UNTOUCHED */
-playAudioBtn.addEventListener("click", () => {
-  awaitAudio.play().catch(err => {
-    console.error("Audio playback failed:", err);
-  });
-
-  playAudioBtn.textContent = "AUDIO PLAYING";
-  playAudioBtn.disabled = true;
-  playAudioBtn.style.opacity = "0.6";
-  playAudioBtn.style.cursor = "default";
-
-  /* FORCE SHOW ICONS */
-  audioControls.style.display = "flex";
-});
-
-/* Pause / Resume toggle */
-pauseResumeBtn.addEventListener("click", () => {
-  if (!awaitAudio.paused) {
-    awaitAudio.pause();
-    pauseResumeBtn.src = "resume.png";
-    playAudioBtn.textContent = "AUDIO PAUSED";
-  } else {
-    awaitAudio.play();
-    pauseResumeBtn.src = "pause.png";
-    playAudioBtn.textContent = "AUDIO PLAYING";
-  }
-});
-
-
-/* Download audio */
-downloadBtn.addEventListener("click", () => {
-  const link = document.createElement("a");
-  link.href = "await.mp3";
-  link.download = "ciphertrace_audio.mp3";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-});
-</script>
-<script>
-const revealPuzzle4Btn = document.getElementById("revealPuzzle4Btn");
-const puzzle4Clue = document.getElementById("puzzle4Clue");
-
-if (revealPuzzle4Btn && puzzle4Clue) {
-  revealPuzzle4Btn.addEventListener("click", () => {
-    puzzle4Clue.style.display = "block";
-    revealPuzzle4Btn.style.display = "none";
-  });
-}
-</script>
-
-
+<script type="module" src="round1.js"></script>
 </body>
 </html>

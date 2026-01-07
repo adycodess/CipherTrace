@@ -7,7 +7,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getAuth, sendSignInLinkToEmail, isSignInWithEmailLink, signInWithEmailLink, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 // Import Realtime Database functions
-import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -64,41 +64,57 @@ function typeWriter(element, text, speed = 50) {
 
 /* Submit Form */
 function submitForm() {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
+  const name = document.getElementById("name").value.trim();
+  const email = document.getElementById("email").value.trim();
 
   if (name === "" || email === "") {
     alert("Please fill all fields");
     return;
   }
 
+  if (!email.endsWith("@ds.study.iitm.ac.in")) {
+    alert("Only IITM emails allowed.");
+    return;
+  }
+
   // Sanitize email for Firebase key (replace dots with commas)
   const sanitizedEmail = email.replace(/\./g, ',');
 
-  // Use set to ensure unique per email (updates if exists)
-  set(ref(db, "registrations/" + sanitizedEmail), {
-    name: name,
-    email: email,
-    timestamp: Date.now()
-  }).then(() => {
-    // Store email in localStorage for use in round1.html
-    localStorage.setItem("userEmail", email);
-    
-    // On success, update navbar button to the email
-    document.getElementById("navLogin").textContent = email;
-    // Replace login section with greeting and typewriter text
-    document.getElementById("loginSection").innerHTML = `
-      <div class="card">
-        <div class="section-title">Hello, ${name}!</div>
-        <p id="welcomeText" class="typewriter"></p>
-      </div>
-    `;
-    // Start typewriter effect
-    const welcomeText = document.getElementById("welcomeText");
-    const fullText = "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
-    typeWriter(welcomeText, fullText);
+  // Check if user has already submitted Round 1
+  get(ref(db, `registrations/${sanitizedEmail}/round1`)).then((snapshot) => {
+    if (snapshot.exists() && snapshot.val().submitted) {
+      alert("You have already submitted Round 1.");
+      return;
+    }
+
+    // Proceed with registration if not submitted
+    set(ref(db, "registrations/" + sanitizedEmail), {
+      name: name,
+      email: email,
+      timestamp: Date.now()
+    }).then(() => {
+      // Store email in localStorage for use in round1.html
+      localStorage.setItem("userEmail", email);
+      
+      // On success, update navbar button to the email
+      document.getElementById("navLogin").textContent = email;
+      // Replace login section with greeting and typewriter text
+      document.getElementById("loginSection").innerHTML = `
+        <div class="card">
+          <div class="section-title">Hello, ${name}!</div>
+          <p id="welcomeText" class="typewriter"></p>
+          <button class="btn" onclick="window.location.href='round1.html'">PROCEED TO ROUND 1</button>
+        </div>
+      `;
+      // Start typewriter effect
+      const welcomeText = document.getElementById("welcomeText");
+      const fullText = "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
+      typeWriter(welcomeText, fullText);
+    }).catch(err => {
+      alert("Error: " + err.message);
+    });
   }).catch(err => {
-    alert("Error: " + err.message);
+    alert("Error checking submission: " + err.message);
   });
 }
 
@@ -203,7 +219,17 @@ function tick() {
     r1btn.disabled = false;
     r1btn.classList.remove("btn-disabled");
     r1btn.textContent = "ENTER ROUND 1";
-    r1btn.onclick = () => { round1Done = true };
+    r1btn.onclick = () => {
+      // Check if user is registered/logged in (using localStorage from submitForm)
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please register/login first.");
+        scrollToLogin(); // Scroll to login section
+        return;
+      }
+      round1Done = true;
+      window.location.href = "round1.html"; // Redirect to Round 1
+    };
   }
 
   /* ROUND 2 */

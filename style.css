@@ -1,0 +1,582 @@
+/* ===============================
+   CSS CUSTOM PROPERTIES (VARIABLES) FOR SYSTEMATIC THEMING
+================================ */
+:root {
+  --primary-color: #00ffff; /* Cyan - Primary accent */
+  --secondary-color: #00ff00; /* Green - Narrative text */
+  --tertiary-color: #ffff00; /* Yellow - Timestamps */
+  --error-color: #ff4d4d; /* Red - Errors */
+  --warning-color: #ff4500; /* Orange - Prefixes */
+  --success-color: #00ff9d; /* Teal - Success states */
+  --accent-color: #ff00ff; /* Magenta - Special elements */
+  --bg-primary: #000; /* Black background */
+  --bg-overlay: rgba(0, 0, 0, 0.8); /* Overlay backgrounds */
+  --border-radius: 8px; /* Consistent border radius */
+  --shadow-glow: 0 0 20px rgba(0, 255, 255, 0.5); /* Glow effect */
+  --font-mono: 'Courier New', monospace; /* Monospace for techy text */
+  --font-orbitron: 'Orbitron', sans-serif; /* Futuristic headers */
+  --font-inter: 'Inter', sans-serif; /* Body text */
+  --transition-fast: 0.2s ease; /* Quick transitions */
+  --transition-slow: 0.6s ease; /* Slower transitions */
+}
+
+/* ===============================
+   RESET AND BASE STYLES
+================================ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-inter);
+  color: #e0e0e0;
+  background: var(--bg-primary);
+  overflow-y: auto;
+  line-height: 1.6;
+  letter-spacing: 0.5px;
+}
+
+/* ===============================
+   BACKGROUND ELEMENTS
+================================ */
+.video-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+  filter: brightness(0.7) contrast(1.2); /* Enhance techy feel */
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.95));
+  z-index: -1;
+  backdrop-filter: blur(12px);
+}
+
+/* ===============================
+   ENTRY SCREEN
+================================ */
+.entry-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  transition: opacity var(--transition-slow), visibility var(--transition-slow);
+}
+
+.entry-screen.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.entry-screen h1 {
+  font-family: var(--font-orbitron);
+  font-size: clamp(48px, 8vw, 64px); /* Responsive font size */
+  letter-spacing: 6px;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  text-shadow: var(--shadow-glow);
+  animation: glitch 2s infinite alternate; /* Added glitch effect for techy vibe */
+}
+
+@keyframes glitch {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-2px); }
+  40% { transform: translateX(2px); }
+  60% { transform: translateX(-1px); }
+  80% { transform: translateX(1px); }
+  100% { transform: translateX(0); }
+}
+
+.entry-screen button {
+  padding: 18px 40px;
+  font-family: var(--font-orbitron);
+  font-size: 16px;
+  letter-spacing: 3px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.entry-screen button:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===============================
+   TIMER
+================================ */
+.timer-box {
+  position: fixed;
+  top: 18px;
+  right: 6vw;
+  z-index: 6;
+  font-family: var(--font-orbitron);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--primary-color);
+  display: none;
+  background: var(--bg-overlay);
+  padding: 10px 15px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ===============================
+   NAVBAR
+================================ */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 18px 6vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.navbar span {
+  font-family: var(--font-orbitron);
+  letter-spacing: 3px;
+  color: var(--primary-color);
+  text-shadow: 0 0 10px var(--primary-color);
+}
+
+/* ===============================
+   STORY ELEMENTS - ENHANCED TECHY SYSTEM LOG STYLE
+================================ */
+.story-text {
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  margin-bottom: 30px;
+  color: var(--secondary-color);
+  font-size: 1rem;
+  background: var(--bg-overlay);
+  border-left: 4px solid var(--primary-color);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-glow);
+  animation: typeIn 2s ease-out;
+  position: relative;
+}
+
+@keyframes typeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.story-text::after {
+  content: "█"; /* Cursor effect */
+  animation: blink 1s infinite;
+  color: var(--primary-color);
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.timestamp {
+  font-family: var(--font-mono);
+  color: var(--tertiary-color);
+  font-size: 1rem;
+  margin-bottom: 10px;
+  display: block;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 255, 0, 0.5);
+  box-shadow: 0 0 5px rgba(255, 255, 0, 0.3);
+}
+
+.timestamp::before {
+  content: "[LOG] ";
+  color: var(--warning-color);
+  font-weight: bold;
+}
+
+.status-box {
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  background: rgba(255, 0, 0, 0.1);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  margin-bottom: 30px;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--error-color);
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+  position: relative;
+}
+
+.status-box::before {
+  content: "[ERROR] ";
+  color: var(--error-color);
+  font-weight: bold;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  background: var(--bg-primary);
+  padding: 2px 5px;
+  border-radius: var(--border-radius);
+}
+
+.status-line {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.status-line:first-child {
+  color: #ff6666;
+  font-weight: bold;
+}
+
+/* ===============================
+   SECTIONS
+================================ */
+.section {
+  padding: 120px 6vw;
+  display: none;
+  justify-content: center;
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section.active {
+  display: flex;
+}
+
+/* ===============================
+   CARD
+================================ */
+.card {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(10, 14, 18, 0.38);
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  padding: 40px;
+  border: 1px solid rgba(0, 255, 255, 0.28);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.18);
+  position: relative;
+  overflow: hidden; /* For scanline effect */
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.02) 3px
+  );
+  pointer-events: none;
+  opacity: 0.4;
+}
+.section-title {
+  font-family: var(--font-orbitron);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.section-title::before {
+  content: "[PUZZLE] ";
+  color: var(--accent-color);
+  font-weight: bold;
+}
+.section.active {
+  display: flex;  /* <-- Now it shows! */
+}
+/* ===============================
+   PUZZLE ELEMENTS
+================================ */
+.scratch-container {
+  position: relative;
+  width: 100%;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.25);
+}
+
+.scratch-container img {
+  width: 100%;
+  display: block;
+}
+
+#scratchCanvas {
+  position: absolute;
+  inset: 0;
+  cursor: crosshair;
+}
+
+.instruction {
+  margin-top: 18px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #9fb0c3;
+  text-align: center;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.instruction::before {
+  content: "[INSTRUCTION] ";
+  color: var(--secondary-color);
+  font-weight: bold;
+}
+
+.reveal-btn, .next-btn, .submit-answer-btn {
+  margin: 20px auto 0;
+  display: block;
+  padding: 15px 30px;
+  font-family: var(--font-orbitron);
+  font-size: 14px;
+  letter-spacing: 2px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.reveal-btn:hover, .next-btn:hover, .submit-answer-btn:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+.clue {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(10, 14, 18, 0.5);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--primary-color);
+  text-align: center;
+  display: none;
+  font-family: var(--font-mono);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.clue::before {
+  content: "[HINT] ";
+  color: var(--tertiary-color);
+  font-weight: bold;
+}
+
+.answer-box-wrapper {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 255, 255, 0.1);
+  text-align: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: var(--border-radius);
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.answer-box-wrapper::before {
+  content: "[INPUT] ";
+  color: var(--warning-color);
+  font-family: var(--font-mono);
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.puzzle-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--primary-color);
+  color: var(--primary-color);
+  border-radius: var(--border-radius);
+  font-family: var(--font-mono);
+  text-align: center;
+  margin-bottom: 15px;
+  outline: none;
+  transition: box-shadow var(--transition-fast);
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.puzzle-input:focus {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+  border-color: var(--secondary-color);
+}
+
+/* ===============================
+   RIDDLE SECTION - FINAL SYNC
+================================ */
+.riddle-card {
+  width: 100%;
+  max-width: 900px;
+  background: rgba(10, 14, 18, 0.38);
+  backdrop-filter: blur(16px);
+  border-radius: 28px;
+  padding: 40px;
+  border: 1px solid rgba(0, 255, 255, 0.28);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.18);
+  text-align: center;
+  position: relative;
+}
+
+.riddle-card::before {
+  content: "[FINAL SYNC] ";
+  color: var(--accent-color);
+  font-family: var(--font-mono);
+  font-weight: bold;
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary);
+  padding: 5px 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(255, 0, 255, 0.5);
+}
+
+.riddle-text {
+  font-size: 18px;
+  letter-spacing: 1px;
+  color: #e0e0e0;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  background: rgba(0, 0, 0, 0.7);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+
+.inline-input {
+  width: 150px;
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--primary-color);
+  text-align: center;
+  outline: none;
+  transition: box-shadow var(--transition-fast);
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+}
+
+.inline-input:focus {
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.8);
+  border-color: var(--secondary-color);
+}
+
+.submit-btn {
+  padding: 15px 30px;
+  font-family: var(--font-orbitron);
+  font-size: 14px;
+  letter-spacing: 2px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 255, 0.5);
+  background: rgba(0, 255, 255, 0.1);
+  color: var(--primary-color);
+  cursor: pointer;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.submit-btn:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: var(--shadow-glow);
+}
+
+.submission-status {
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--success-color);
+  display: none;
+  font-family: var(--font-mono);
+  background: rgba(0, 255, 157, 0.1);
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 255, 157, 0.5); /* <-- Added the missing closing value */
+}
+
+.insta-button{
+  display:inline-block;
+  margin-top:25px;
+  padding:15px 34px;
+  font-family:'Orbitron',sans-serif;
+  font-size:14px;
+  letter-spacing:2px;
+  color:#00ffff;
+  text-decoration:none;
+  border-radius:14px;
+  border:1px solid rgba(0,255,255,.55);
+  background:rgba(0,255,255,.08);
+  backdrop-filter:blur(8px);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.insta-button:hover {
+    background: rgba(0,255,255,.15);
+    box-shadow: 0 0 20px rgba(0,255,255,0.5);
+}
+
+.audio-controls {
+  margin-top: 16px;
+  display: none;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.audio-icon { 
+    width: 32px; 
+    height: 32px; 
+    cursor: pointer; 
+    transition: transform 0.2s ease;
+}
+
+.audio-icon:hover {
+    transform: scale(1.1);
+}
+
