@@ -234,24 +234,34 @@ canvas.addEventListener("mousemove", e => {
 function checkScratch() {
   if (completed) return;
 
-  const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-  let clear = 0;
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixels = imageData.data;
 
-  for (let i = 3; i < data.length; i += 4) {
-    if (data[i] === 0) clear++;
+  let transparentPixels = 0;
+
+  for (let i = 3; i < pixels.length; i += 4) {
+    if (pixels[i] === 0) {
+      transparentPixels++;
+    }
   }
 
-  const percentScratched = (clear / (canvas.width * canvas.height)) * 100;
+  const totalPixels = pixels.length / 4;
+  const percentScratched = (transparentPixels / totalPixels) * 100;
 
   if (percentScratched >= 45) {
     completed = true;
-    const statusText = document.getElementById("scratchStatus");
-    
-    // Immediate hint reveal
-    statusText.textContent = "System stabilized. Clue revealed.";
-    document.getElementById("clue").style.display = "block";
+
+    // Reveal clue
+    const clue = document.getElementById("clue");
+    if (clue) {
+      clue.style.display = "block";
+    }
+
+    // Optional: disable further scratching
+    canvas.style.pointerEvents = "none";
   }
 }
+
 /* =========================
    AUDIO SECTION (CORRECTED)
 ========================= */
