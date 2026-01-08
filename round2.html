@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CipherTrace | Round 2</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<video class="video-bg" autoplay muted loop playsinline>
+  <source src="video.mp4" type="video/mp4">
+</video>
+<div class="overlay"></div>
+
+<!-- ENTRY -->
+<div class="entry-screen" id="entryScreen">
+  <h1>ROUND 2</h1>
+  <button onclick="enterRound()">ENTER</button>
+</div>
+
+<!-- TIMER -->
+<div class="timer-box" id="timer">00:00</div>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <span>CIPHERTRACE — ROUND 2: DATA RECONSTRUCTION</span>
+</div>
+
+<!-- INTRO STORY STEP -->
+<div class="section active" id="step-intro">
+    <div class="card">
+        <span class="timestamp">03:47 IST</span>
+        <div class="story-text">
+            The Specter fragmented the data streams. <br>
+            Pieces scattered across the void. <br><br>
+            Reassemble the fragments. <br>
+            Restore the coherence. <br><br>
+            What was whole is now broken — <br>
+            mend it to reveal the truth.
+        </div>
+
+        <div class="status-box">
+            <span class="status-line">SYSTEM STATUS: FRAGMENTED</span>
+            <span class="status-line">MODULE: DATA_LAYER</span>
+            <span class="status-line">ERROR: INTEGRITY_BREACH</span>
+        </div>
+
+        <button class="next-btn" onclick="nextStep('step-intro', 'step-p1')">INITIATE RECONSTRUCTION</button>
+    </div>
+</div>
+
+<!-- PUZZLE 1: SYSTEM MEMORY LOCK -->
+<div class="section" id="step-p1">
+  <div class="card">
+    <div class="section-title">PUZZLE 1 — SYSTEM MEMORY LOCK</div>
+
+    <div class="story-text">
+      You restored the system.<br>
+      Some distortions were corrected.<br>
+      Others were preserved.<br><br>
+
+      One file survived the corruption.<br>
+      It is locked.<br><br>
+
+      You already know the key.<br><br>
+
+      Not everything unlocks by force.<br>
+      Some things unlock by memory.
+    </div>
+
+    <div class="status-box">
+        <span class="status-line">FILE: R2_TRANSMISSION.pdf 🔒</span>
+        <span class="status-line">STATUS: ENCRYPTED</span>
+    </div>
+
+    <button class="next-btn" id="downloadR2PDF" onclick="nextStep('step-p1', 'step-p2')">DOWNLOAD</button>
+  </div>
+</div>
+
+<!-- PUZZLE 2: INSTAGRAM ECHO -->
+<div class="section" id="step-p2">
+  <div class="card">
+    <div class="section-title">PUZZLE 2 — INSTAGRAM ECHO</div>
+
+    <div class="story-text">
+      This answer does not exist on this page.<br><br>
+
+      Visit our Instagram posts and look beyond captions that try to distract you.<br>
+      Ignore what sounds dramatic or misleading.<br>
+      Identify the single idea that quietly repeats itself across posts.<br>
+      When everything else fades into noise, one word still stands.
+    </div>
+
+    <div class="status-box">
+        <span class="status-line">PLATFORM: WiTS Instagram</span>
+        <span class="status-line">LOCATION: Post dated 20 April 2025</span>
+    </div>
+
+    <button class="next-btn" id="openInsta" onclick="window.open('https://instagram.com/wits', '_blank')">OPEN INSTAGRAM PAGE</button>
+  </div>
+</div>
+
+<!-- PUZZLE 3: SHATTERED QR -->
+<div class="section" id="step-p3">
+  <div class="card">
+    <div class="section-title">PUZZLE 3 — SHATTERED QR</div>
+
+    <div class="story-text">
+      Some answers are never whole.<br><br>
+
+      A QR once existed.<br>
+      Now it has been shattered.<br>
+      The pieces hide across many realms.<br><br>
+
+      QR fragments exist in:
+    </div>
+
+    <ul class="instruction">
+      <li>CipherTrace Website (1 fragment)</li>
+      <li>Instagram (1 fragment)</li>
+      <li>Email / Congratulations Mail (1 fragment)</li>
+      <li>Instagram Highlight / Social Post (1 fragment)</li>
+    </ul>
+
+    <div class="story-text">
+      Each fragment is only a piece.<br>
+      Alone, it is useless.<br>
+      Together, it becomes a key.
+    </div>
+
+    <button class="next-btn" onclick="nextStep('step-p3', 'step-p4')">PROCEED</button>
+  </div>
+</div>
+
+<!-- PUZZLE 4: THE WIZARD'S DEMAND -->
+<div class="section" id="step-p4">
+  <div class="card">
+    <div class="section-title">PUZZLE 4 — THE WIZARD'S DEMAND</div>
+
+    <div class="story-text">
+      Platform: Scratch Website<br>
+      Entry obtained from the reconstructed QR of Puzzle 3.<br><br>
+
+      A Wizard waits for you.<br>
+      He asks for a spell.<br><br>
+
+      No hint exists there.<br>
+      No instructions are given.<br><br>
+
+      The answer is not on Scratch.<br>
+      It is not on Instagram.<br><br>
+
+      The spell is hidden on the CipherTrace website itself.
+    </div>
+
+    <button class="next-btn" onclick="nextStep('step-p4', 'step-p5')">PROCEED</button>
+  </div>
+</div>
+
+<!-- PUZZLE 5: HIDDEN IN PLAIN SIGHT -->
+<div class="section" id="step-p5">
+  <div class="card">
+    <div class="section-title">PUZZLE 5 — HIDDEN IN PLAIN SIGHT</div>
+
+    <div class="story-text">
+      Image<br><br>
+    </div>
+
+    <blockquote class="story-text">
+      Do not hide the secret.<br>
+      Learn to look for it.<br><br>
+
+      Become an artist of seeking meaning inside the ordinary,<br>
+      where each pixel hides secrets<br>
+      in intersections of red, blue, and green.<br><br>
+
+      The message is not protected by confusion,<br>
+      but by being unnoticed.
+    </blockquote>
+
+    <button class="next-btn" id="downloadImage" onclick="nextStep('step-p5', 'step-end')">DOWNLOAD IMAGE</button>
+
+    <div class="answer-box-wrapper">
+      <input type="text" class="puzzle-input" id="round2FinalAnswer" placeholder="Enter Final Decoded Message">
+      <button class="submit-answer-btn" id="submitRound2" onclick="submitRound2()">SUBMIT ANSWER</button>
+    </div>
+
+    <div id="round2Status"></div>
+  </div>
+</div>
+
+<!-- SUCCESS STEP -->
+<div class="section" id="step-end">
+    <div class="card" style="text-align:center;">
+        <h1 style="color:#00ffff; font-family:'Orbitron'; margin-bottom:20px;">RECONSTRUCTION COMPLETE</h1>
+        <p class="story-text">The data fragments have been reassembled. The Specter's trail continues elsewhere.</p>
+    </div>
+</div>
+
+<script>
+// round2.js - JavaScript for CipherTrace Round 2
+// Adapted from round1.js format, using styles from style.css
+
+// Timer functionality
+let timerInterval;
+
+function startTimer() {
+  let time = 0;
+  timerInterval = setInterval(() => {
+    time++;
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }, 1000);
+}
+
+// Enter round
+function enterRound() {
+  document.getElementById('entryScreen').style.display = 'none';
+  document.getElementById('step-intro').classList.add('active');
+  startTimer();
+}
+
+// Next step navigation
+function nextStep(current, next) {
+  document.getElementById(current).classList.remove('active');
+  document.getElementById(next).classList.add('active');
+}
+
+// Submit Round 2 (placeholder)
+function submitRound2() {
+  const answer = document.getElementById('round2FinalAnswer').value.trim();
+  const status = document.getElementById('round2Status');
+  if (answer) {
+    status.textContent = 'Answer submitted. Awaiting verification...';
+    status.style.color = '#00ff00';
+  } else {
+    status.textContent = 'Please enter an answer.';
+    status.style.color = '#ff4d4d';
+  }
+}
+</script>
+
+</body>
+</html>

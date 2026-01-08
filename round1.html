@@ -63,14 +63,11 @@
       <canvas id="scratchCanvas"></canvas>
     </div>
 
-    <div class="instruction">Scratch the surface to reveal. Observe carefully.</div>
+    <div class="instruction">  Scratch at least 45% to stabilize the system.</div>
     <div class="clue" id="clue" style="display:none;">
   Thala for a reason
 </div>
 
-<div class="instruction" id="scratchStatus">
-  Scratch at least 45% to stabilize the system.
-</div>
 
     <div class="answer-box-wrapper">
         <input type="text" class="puzzle-input" id="ans1" placeholder="Enter answer...">
@@ -147,12 +144,6 @@
         <li>When everything else fades into noise, one word still stands.</li>
       </ul>
     </div>
-
-    <div style="text-align: center;">
-  <button style="display: inline-block; margin-top: 25px; padding: 15px 34px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; color: #00ffff; text-decoration: none; border-radius: 14px; border: 1px solid rgba(0, 255, 255, 0.55); background: rgba(0, 255, 255, 0.08); backdrop-filter: blur(8px); transition: background 0.3s ease, box-shadow 0.3s ease; cursor: pointer;">
-    OPEN INSTAGRAM PAGE
-  </button>
-</div>
 
 
     <div class="answer-box-wrapper">
@@ -341,6 +332,8 @@
 
   </div>
 </div>
+
+
 <!-- STORY CONTEXT BEFORE PUZZLE 5 -->
 <div class="section" id="story-p5-bridge">
   <div class="card">
@@ -374,10 +367,9 @@
 
 <div class="instruction" style="margin-top: 30px; font-size: 14px; letter-spacing: 1px; color: #9fb0c3; text-align: center; font-family: 'Courier New', monospace; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.3); box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);">
   <ul style="list-style: none; padding: 0; margin: 0; text-align: left; display: inline-block;">
-    <li>Replace <code style="color: #00ffff;">[ dot ]</code> → <code style="color: #00ffff;">.</code></li>
-    <li>Replace <code style="color: #00ffff;">[ ? ]</code> → <code style="color: #00ffff;">?</code></li>
-    <li>Remove spaces and line breaks</li>
-    <li>Reconstruct the correct URL</li>
+    <li>Shattered link pieces are hidden in the system.</li>
+    <li>Insert the pieces into the placeholders.</li>
+    <li>Check status to verify.</li>
   </ul>
 </div>
 
@@ -445,6 +437,35 @@
          letter-spacing:1px;">
 </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const frag1 = document.getElementById("frag1");
+    const frag2 = document.getElementById("frag2");
+    const urlContainer = document.getElementById("urlContainer");
+    const checkStatusBtn = document.getElementById("checkStatusBtn");
+    const linkStatus = document.getElementById("linkStatus");
+
+    function checkUrl() {
+      const val1 = frag1.value.trim();
+      const val2 = frag2.value.trim();
+
+      if (val1 === "1TS0" && val2 === "w") {
+        // Reconstruct the full URL and make it a highlighted clickable link
+        const fullUrl = `https://drive.google.com/drive/u/0/folders/1TS0kR2ugPpRXNdHcDqmUoqwX1QU3v`;
+        urlContainer.innerHTML = `<a href="${fullUrl}" target="_blank" style="color: #00ff9d; text-decoration: underline; font-weight: bold; font-family: 'Courier New', monospace; font-size: 16px; letter-spacing: 1px;">${fullUrl}</a>`;
+        linkStatus.textContent = "URL reconstructed successfully! Link is now active.";
+        linkStatus.style.color = "#00ff00";
+      } else {
+        linkStatus.textContent = "Invalid inputs. Try again.";
+        linkStatus.style.color = "#ff4d4d";
+      }
+    }
+
+    // Add listener to button for manual check
+    checkStatusBtn.addEventListener("click", checkUrl);
+  });
+</script>
+
 <div class="instruction">
   The path was restored.<br>The data is still hidden.
 </div>
@@ -452,26 +473,6 @@
 <button class="next-btn" onclick="nextStep('story-p5-bridge', 'step-p5')" style="margin: 20px auto 0; display: block; padding: 15px 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; letter-spacing: 2px; border-radius: 8px; border: 1px solid rgba(0, 255, 255, 0.5); background: rgba(0, 255, 255, 0.1); color: #00ffff; cursor: pointer; transition: background 0.2s ease, box-shadow 0.2s ease;">
   SUBMIT
 </button>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const dot1 = document.getElementById("dot1");
-    const dot2 = document.getElementById("dot2");
-    const question = document.getElementById("question");
-    const urlContainer = document.getElementById("urlContainer");
-
-    function checkUrl() {
-      if (dot1.value === "." && dot2.value === "." && question.value === "?") {
-        // Replace with clickable link
-        urlContainer.innerHTML = '<a href="https://drive.google.com/drive/folders/M144?usp=sharing" target="_blank" style="color: #00ff9d; text-decoration: none; font-family: \'Courier New\', monospace; font-size: 16px; letter-spacing: 1px;">https://drive.google.com/drive/folders/M144?usp=sharing</a>';
-      }
-    }
-
-    dot1.addEventListener("input", checkUrl);
-    dot2.addEventListener("input", checkUrl);
-    question.addEventListener("input", checkUrl);
-  });
-</script>
 
   </div>
 </div>
@@ -483,6 +484,8 @@
     <div class="riddle-text">
       The <input type="text" class="inline-input" id="input1" placeholder="ans 1"> <input type="text" class="inline-input" id="input2" placeholder="ans 2"> . Your <input type="text" class="inline-input" id="input3" placeholder="ans 3"> <input type="text" class="inline-input" id="input4" placeholder="ans 4"> . <input type="text" class="inline-input" id="input5" placeholder="ans 5"> .
     </div>
+
+    <div class="instruction">Reconstruct the last server to solve the spekter.</div>
     <button class="submit-btn" id="submitBtn" onclick="submitRound1()">FINISH STORY & SUBMIT</button>
     <div class="submission-status" id="submissionStatus"></div>
   </div>
@@ -495,6 +498,7 @@
         <p class="story-text">The system orientation has been restored. The Specter's trail continues elsewhere.</p>
     </div>
 </div>
+
 
 <script type="module" src="round1.js"></script>
 </body>

@@ -126,6 +126,7 @@ if (revealPuzzle3Btn && puzzle3Clue) {
 }
 
 // Updated submitRound1 function in round1.js
+// Updated submitRound1 function in round1.js
 function submitRound1() {
   if (!sanitizedEmail) {
     alert("User not logged in.");
@@ -139,7 +140,7 @@ function submitRound1() {
   const a5 = document.getElementById("input5").value.trim().toLowerCase();
 
   // Check if all five answers are correct
-  const isCorrect = (a1 === "system" && a2 === "stands" && a3 === "worth" && a4 === "awaits" && a5 === "order-restored");
+  const isCorrect = (a1 === "system" && a2 === "stands" && a3 === "worth" && a4 === "awaits" && a5 === "order restored");
 
   // Get current date and time
   const now = new Date();
@@ -166,7 +167,7 @@ function submitRound1() {
     .then(() => {
       const status = document.getElementById("submissionStatus");
       if (isCorrect) {
-        status.textContent = "SUCCESS FOR SYSTEM. ROUND 1 COMPLETE.";
+        status.textContent = "Congratulations. you saved the spekter. You will go to round 2";
         status.style.display = "block";
       } else {
         status.textContent = "Specter missing, connection not integrated.";
@@ -246,14 +247,9 @@ function checkScratch() {
     completed = true;
     const statusText = document.getElementById("scratchStatus");
     
-    // Step 1: Immediate Processing Message
-    statusText.textContent = "Processing system...";
-
-    // Step 2: 10 second delay for Unlock
-    setTimeout(() => {
-      statusText.textContent = "System unlocked";
-      document.getElementById("clue").style.display = "block";
-    }, 10000);
+    // Immediate hint reveal
+    statusText.textContent = "System stabilized. Clue revealed.";
+    document.getElementById("clue").style.display = "block";
   }
 }
 /* =========================
