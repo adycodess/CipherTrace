@@ -189,6 +189,11 @@ input{
   from { text-shadow: 0 0 5px rgba(0, 255, 255, 0.5); }
   to { text-shadow: 0 0 10px rgba(0, 255, 255, 0.8); }
 }
+
+/* Hidden sections for Round 1 and Round 2 */
+.round-restricted {
+  display: none;
+}
 </style>
 </head>
 
@@ -229,7 +234,7 @@ input{
 </div>
 
 <!-- ROUND 1 -->
-<div class="section reveal">
+<div class="section reveal round-restricted" id="round1Section">
   <div class="card">
     <div class="section-title">ROUND 1 — SOCIAL MEDIA INVESTIGATION</div>
     <p>
@@ -250,7 +255,7 @@ input{
 </div>
 
 <!-- ROUND 2 -->
-<div class="section reveal">
+<div class="section reveal round-restricted" id="round2Section">
   <div class="card">
     <div class="section-title">ROUND 2 — PIXEL LAB</div>
     <p>

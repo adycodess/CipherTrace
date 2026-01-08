@@ -74,6 +74,9 @@ function submitForm() {
 
   if (!email.endsWith("@ds.study.iitm.ac.in")) {
     alert("Only IITM emails allowed.");
+    // Hide round sections
+    document.getElementById("round1Section").classList.add("round-restricted");
+    document.getElementById("round2Section").classList.add("round-restricted");
     return;
   }
 
@@ -110,6 +113,10 @@ function submitForm() {
       const welcomeText = document.getElementById("welcomeText");
       const fullText = "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
       typeWriter(welcomeText, fullText);
+
+      // Show round sections
+      document.getElementById("round1Section").classList.remove("round-restricted");
+      document.getElementById("round2Section").classList.remove("round-restricted");
     }).catch(err => {
       alert("Error: " + err.message);
     });
@@ -126,6 +133,9 @@ function login() {
   if (!email.endsWith("@ds.study.iitm.ac.in")) {
     status.textContent = "Only IITM emails allowed";
     status.className = "status error";
+    // Hide round sections
+    document.getElementById("round1Section").classList.add("round-restricted");
+    document.getElementById("round2Section").classList.add("round-restricted");
     return;
   }
 

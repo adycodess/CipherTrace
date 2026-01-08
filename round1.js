@@ -2,7 +2,7 @@
    FIREBASE INITIALIZATION
 ========================= */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, push, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAoFcqKMYnU1pfF8pVBk6oxusVxgAzb1oQ",
@@ -49,6 +49,39 @@ function setupInputSync() {
       });
     }
   });
+}
+
+/* =========================
+   LOGIN TIME SAVING
+========================= */
+/**
+ * Saves the login time to the database for the current user.
+ * Multiple logins are stored as an array under the user's entry.
+ */
+function saveLoginTime() {
+  if (!sanitizedEmail) {
+    console.log("No user email found in localStorage. Skipping login time save.");
+    return;
+  }
+
+  const now = new Date();
+  const loginTime = {
+    timestamp: now.toISOString(),
+    date: now.toISOString().split('T')[0],
+    time: now.toTimeString().split(' ')[0]
+  };
+
+  // Reference to the logins node for the user
+  const loginsRef = ref(db, `registrations/${sanitizedEmail}/logins`);
+
+  // Push the new login time to the array
+  push(loginsRef, loginTime)
+    .then(() => {
+      console.log("Login time saved successfully.");
+    })
+    .catch(err => {
+      console.error("Error saving login time:", err);
+    });
 }
 
 /* =========================
@@ -126,7 +159,6 @@ if (revealPuzzle3Btn && puzzle3Clue) {
 }
 
 // Updated submitRound1 function in round1.js
-// Updated submitRound1 function in round1.js
 function submitRound1() {
   if (!sanitizedEmail) {
     alert("User not logged in.");
@@ -201,34 +233,59 @@ function resizeCanvas() {
 img.onload = resizeCanvas;
 window.addEventListener("resize", resizeCanvas);
 
-canvas.addEventListener("mousedown", e => {
-  scratching = true;
+function getEventPos(e) {
   const r = canvas.getBoundingClientRect();
-  lastX = e.clientX - r.left;
-  lastY = e.clientY - r.top;
-});
+  return {
+    x: e.clientX - r.left,
+    y: e.clientY - r.top
+  };
+}
 
-canvas.addEventListener("mouseup", () => {
+function startScratching(e) {
+  scratching = true;
+  const pos = getEventPos(e);
+  lastX = pos.x;
+  lastY = pos.y;
+}
+
+function stopScratching() {
   scratching = false;
   checkScratch();
-});
+}
 
-canvas.addEventListener("mousemove", e => {
+function doScratching(e) {
   if (!scratching) return;
-  const r = canvas.getBoundingClientRect();
-  const x = e.clientX - r.left;
-  const y = e.clientY - r.top;
+  const pos = getEventPos(e);
 
   ctx.globalCompositeOperation = "destination-out";
   ctx.lineWidth = 80;
   ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
+  ctx.lineTo(pos.x, pos.y);
   ctx.stroke();
 
-  lastX = x;
-  lastY = y;
+  lastX = pos.x;
+  lastY = pos.y;
+}
+
+// Mouse events
+canvas.addEventListener("mousedown", startScratching);
+canvas.addEventListener("mouseup", stopScratching);
+canvas.addEventListener("mousemove", doScratching);
+
+// Touch events for mobile support
+canvas.addEventListener("touchstart", e => {
+  e.preventDefault();
+  startScratching(e.touches[0]);
+});
+canvas.addEventListener("touchend", e => {
+  e.preventDefault();
+  stopScratching();
+});
+canvas.addEventListener("touchmove", e => {
+  e.preventDefault();
+  doScratching(e.touches[0]);
 });
 
 function checkScratch() {
@@ -431,6 +488,13 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNavButtons();
 });
 
+/* =========================
+   INITIALIZE LOGIN TIME SAVE
+========================= */
+// Save login time when the script loads, if user is logged in
+document.addEventListener("DOMContentLoaded", () => {
+  saveLoginTime();
+});
 
 /* =========================
    GLOBAL EXPORTS

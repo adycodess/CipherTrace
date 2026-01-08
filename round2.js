@@ -1,5 +1,6 @@
 // round2.js — JavaScript for CipherTrace Round 2
 // All sections appear on one page after entering Round 2
+// Unified Firebase config to match the main app (index.html) for consistent data storage
 
 /* =========================
    FIREBASE INITIALIZATION
@@ -8,16 +9,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebas
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 /* =========================
-   FIREBASE CONFIG
+   FIREBASE CONFIG (UNIFIED WITH MAIN APP)
 ========================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyB-GMblBiR9uwlzVSAvlB2k4DqvcJSuBfM",
-  authDomain: "ciphertraceround2.firebaseapp.com",
-  databaseURL: "https://ciphertraceround2-default-rtdb.firebaseio.com",
-  projectId: "ciphertraceround2",
-  storageBucket: "ciphertraceround2.firebasestorage.app",
-  messagingSenderId: "765614109082",
-  appId: "1:765614109082:web:aad2b70e461339fb940a23"
+  apiKey: "AIzaSyAoFcqKMYnU1pfF8pVBk6oxusVxgAzb1oQ",
+  authDomain: "ciphertrace-26b33.firebaseapp.com",
+  databaseURL: "https://ciphertrace-26b33-default-rtdb.firebaseio.com",
+  projectId: "ciphertrace-26b33",
+  storageBucket: "ciphertrace-26b33.firebasestorage.app",
+  messagingSenderId: "965143042848",
+  appId: "1:965143042848:web:959bd072875b52e20e1545"
 };
 
 // Initialize Firebase
