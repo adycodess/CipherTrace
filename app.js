@@ -74,55 +74,50 @@ function submitForm() {
 
   if (!email.endsWith("iitm.ac.in")) {
     alert("Only IITM emails allowed.");
-    // Hide round sections
     document.getElementById("round1Section").classList.add("round-restricted");
     document.getElementById("round2Section").classList.add("round-restricted");
     return;
   }
 
-  // Sanitize email for Firebase key (replace dots with commas)
-  const sanitizedEmail = email.replace(/\./g, ',');
-
-  // Check if user has already submitted Round 1
-  get(ref(db, `registrations/${sanitizedEmail}/round1`)).then((snapshot) => {
-    if (snapshot.exists() && snapshot.val().submitted) {
-      alert("You have already submitted Round 1.");
+  // 🔐 API call instead of Firebase access
+  fetch("/api/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, email })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (!data.success) {
+      alert(data.error || "Registration failed");
       return;
     }
 
-    // Proceed with registration if not submitted
-    set(ref(db, "registrations/" + sanitizedEmail), {
-      name: name,
-      email: email,
-      timestamp: Date.now()
-    }).then(() => {
-      // Store email in localStorage for use in round1.html
-      localStorage.setItem("userEmail", email);
-      
-      loggedIn = true; // Set loggedIn to true after successful registration
-      
-      // On success, update navbar button to the email
-      document.getElementById("navLogin").textContent = email;
-      // Replace login section with greeting and typewriter text
-      document.getElementById("loginSection").innerHTML = `
-        <div class="card">
-          <div class="section-title">Hello, ${name}!</div>
-          <p id="welcomeText" class="typewriter"></p>
-        </div>
-      `;
-      // Start typewriter effect
-      const welcomeText = document.getElementById("welcomeText");
-      const fullText = "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
-      typeWriter(welcomeText, fullText);
+    // Store email locally
+    localStorage.setItem("userEmail", email);
+    loggedIn = true;
 
-      // Show round sections
-      document.getElementById("round1Section").classList.remove("round-restricted");
-      document.getElementById("round2Section").classList.remove("round-restricted");
-    }).catch(err => {
-      alert("Error: " + err.message);
-    });
-  }).catch(err => {
-    alert("Error checking submission: " + err.message);
+    // Update UI
+    document.getElementById("navLogin").textContent = email;
+
+    document.getElementById("loginSection").innerHTML = `
+      <div class="card">
+        <div class="section-title">Hello, ${name}!</div>
+        <p id="welcomeText" class="typewriter"></p>
+      </div>
+    `;
+
+    const welcomeText = document.getElementById("welcomeText");
+    const fullText =
+      "Welcome to CipherTrace. We are excited to have you as part of this challenge. You may now begin by completing Round 1 and take your first step into the CipherTrace journey. Best of luck as you decode, analyze, and advance through the event.";
+    typeWriter(welcomeText, fullText);
+
+    document.getElementById("round1Section").classList.remove("round-restricted");
+    document.getElementById("round2Section").classList.remove("round-restricted");
+  })
+  .catch(() => {
+    alert("Server error. Please try again.");
   });
 }
 
