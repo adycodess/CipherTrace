@@ -65,14 +65,14 @@ function typeWriter(element, text, speed = 50) {
 /* Submit Form */
 function submitForm() {
   const name = document.getElementById("name").value.trim();
-  const email = document.getElementById("email").value.trim();
+  const email = document.getElementById("email").value.trim().toLowerCase();
 
   if (name === "" || email === "") {
     alert("Please fill all fields");
     return;
   }
 
-  if (!email.endsWith(".iitm.ac.in")) {
+  if (!email.endsWith("@ds.study.iitm.ac.in")) {
     alert("Only IITM emails allowed.");
     // Hide round sections
     document.getElementById("round1Section").classList.add("round-restricted");
@@ -98,6 +98,8 @@ function submitForm() {
     }).then(() => {
       // Store email in localStorage for use in round1.html
       localStorage.setItem("userEmail", email);
+      
+      loggedIn = true; // Set loggedIn to true after successful registration
       
       // On success, update navbar button to the email
       document.getElementById("navLogin").textContent = email;
@@ -218,7 +220,25 @@ function tick() {
 
   const r1Remaining = r1Time - now;
 
-  if (r1Remaining > 0) {
+  if (loggedIn) {
+    // If logged in, enable Round 1 regardless of timer
+    tbtn1.textContent = "ROUND 1 AVAILABLE";
+    r1.textContent = "READY";
+    r1btn.disabled = false;
+    r1btn.classList.remove("btn-disabled");
+    r1btn.textContent = "ENTER ROUND 1";
+    r1btn.onclick = () => {
+      // Check if user is registered/logged in (using localStorage from submitForm)
+      const userEmail = localStorage.getItem("userEmail");
+      if (!userEmail) {
+        alert("Please register/login first.");
+        scrollToLogin(); // Scroll to login section
+        return;
+      }
+      round1Done = true;
+      window.location.href = "round1.html"; // Redirect to Round 1
+    };
+  } else if (r1Remaining > 0) {
     const t = format(r1Remaining);
     tbtn1.textContent = "UNLOCKS IN " + t;   // 🔥 ONLY HERE
     r1.textContent = "";                    // no duplicate timer
