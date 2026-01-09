@@ -87,7 +87,10 @@ function submitForm() {
     },
     body: JSON.stringify({ name, email })
   })
-  .then(res => res.json())
+.then(res => {
+  if (!res.ok) throw new Error("Request failed");
+  return res.json();
+})
   .then(data => {
     if (!data.success) {
       alert(data.error || "Registration failed");
