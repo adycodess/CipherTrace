@@ -72,7 +72,7 @@ function submitForm() {
     return;
   }
 
-  if (!email.endsWith("@ds.study.iitm.ac.in")) {
+  if (!email.endsWith("@.iitm.ac.in")) {
     alert("Only IITM emails allowed.");
     // Hide round sections
     document.getElementById("round1Section").classList.add("round-restricted");
