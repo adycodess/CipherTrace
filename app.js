@@ -116,9 +116,8 @@ function submitForm() {
     document.getElementById("round1Section").classList.remove("round-restricted");
     document.getElementById("round2Section").classList.remove("round-restricted");
   })
-  .catch(() => {
-    alert("Server error. Please try again.");
-  });
+  .catch(err => alert(err.message));
+
 }
 
 /* Login */
