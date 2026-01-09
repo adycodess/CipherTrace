@@ -199,7 +199,7 @@ function submitRound1() {
     .then(() => {
       const status = document.getElementById("submissionStatus");
       if (isCorrect) {
-        status.textContent = "Congratulations. you saved the spekter. You will go to round 2";
+        status.textContent = "Congratulations. you saved the Spekter.";
         status.style.display = "block";
       } else {
         status.textContent = "Specter missing, connection not integrated.";
@@ -271,8 +271,10 @@ function doScratching(e) {
 
 // Mouse events
 canvas.addEventListener("mousedown", startScratching);
-canvas.addEventListener("mouseup", stopScratching);
+document.addEventListener("mouseup", stopScratching);
 canvas.addEventListener("mousemove", doScratching);
+canvas.addEventListener("mouseleave", stopScratching);
+
 
 // Touch events for mobile support
 canvas.addEventListener("touchstart", e => {
@@ -312,11 +314,7 @@ function checkScratch() {
     const clue = document.getElementById("clue");
     if (clue) {
       clue.style.display = "block";
-    }
-
-    // Optional: disable further scratching
-    canvas.style.pointerEvents = "none";
-  }
+    }  }
 }
 
 /* =========================
