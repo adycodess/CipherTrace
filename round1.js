@@ -171,8 +171,6 @@ function submitRound1() {
   const a4 = document.getElementById("ans4").value.trim().toLowerCase();
   const a5 = document.getElementById("input5").value.trim().toLowerCase();
 
-  // Check if all five answers are correct
-  const isCorrect = (a1 === "system" && a2 === "stands" && a3 === "worth" && a4 === "awaits" && a5 === "order restored");
 
   // Get current date and time
   const now = new Date();
