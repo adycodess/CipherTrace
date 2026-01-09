@@ -171,6 +171,8 @@ function submitRound1() {
   const a4 = document.getElementById("ans4").value.trim().toLowerCase();
   const a5 = document.getElementById("input5").value.trim().toLowerCase();
 
+  // Allow any answer to be submitted (no validation)
+  const isCorrect = true;
 
   // Get current date and time
   const now = new Date();
@@ -273,7 +275,6 @@ document.addEventListener("mouseup", stopScratching);
 canvas.addEventListener("mousemove", doScratching);
 canvas.addEventListener("mouseleave", stopScratching);
 
-
 // Touch events for mobile support
 canvas.addEventListener("touchstart", e => {
   e.preventDefault();
@@ -312,7 +313,8 @@ function checkScratch() {
     const clue = document.getElementById("clue");
     if (clue) {
       clue.style.display = "block";
-    }  }
+    }
+  }
 }
 
 /* =========================
@@ -368,9 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
 document.addEventListener("DOMContentLoaded", () => {
-
   const backBtn = document.createElement("button");
   backBtn.textContent = "← BACK";
   backBtn.style.cssText = `
@@ -450,7 +450,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Puzzle 3 and beyond → BACK + FORWARD
     if (idx >= PUZZLE3_INDEX) {
-
       // BACK
       if (idx > STORY3_INDEX) {
         backBtn.style.display = "block";
