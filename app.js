@@ -106,7 +106,6 @@ function submitForm() {
         <div class="card">
           <div class="section-title">Hello, ${name}!</div>
           <p id="welcomeText" class="typewriter"></p>
-          <button class="btn" onclick="window.location.href='round1.html'">PROCEED TO ROUND 1</button>
         </div>
       `;
       // Start typewriter effect
