@@ -124,36 +124,26 @@ function submitForm() {
 }
 
 /* Login */
-function login() {
+function submitForm() {
+  const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim().toLowerCase();
-  const status = document.getElementById("loginStatus");
 
-  if (!email.endsWith("@ds.study.iitm.ac.in")) {
-    status.textContent = "Only IITM emails allowed";
-    status.className = "status error";
-    // Hide round sections
-    document.getElementById("round1Section").classList.add("round-restricted");
-    document.getElementById("round2Section").classList.add("round-restricted");
+  if (!name || !email) {
+    alert("Fill all fields");
     return;
   }
 
-  status.textContent = "Sending login link…";
-  status.className = "status";
+  if (!email.endsWith("iitm.ac.in")) {
+    alert("Only IITM emails allowed");
+    return;
+  }
 
-  sendSignInLinkToEmail(auth, email, {
-    url: window.location.href,
-    handleCodeInApp: true
-  })
-  .then(() => {
-    localStorage.setItem("ciphertraceEmail", email);
-    status.textContent = "Login link sent to your IITM email";
-    status.className = "status success";
-  })
-  .catch(err => {
-    status.textContent = err.message;
-    status.className = "status error";
-  });
+  localStorage.setItem("userName", name);
+  localStorage.setItem("userEmail", email);
+
+  window.location.href = "round1.html";
 }
+
 
 /* Google Sign In */
 function signInWithGoogle() {
